@@ -10,10 +10,10 @@ import javax.swing.JTextField;
 public class login implements ActionListener{
 	
 	JFrame loginFrame;
-	private static JLabel userLabel, passwordLabel, statusLabel;
-	private static JTextField userText;
-	private static JPasswordField passwordText;
-	private static JButton loginButton;
+	private JLabel userLabel, passwordLabel, statusLabel;
+	private JTextField userText;
+	private JPasswordField passwordText;
+	private JButton loginButton;
 	private static String username, password;
 	
 	public login() {
