@@ -1,14 +1,11 @@
-//import java.util.Scanner;
-
+import java.util.Scanner;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
-
-import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,130 +15,129 @@ import javax.swing.JTextField;
 
 public class fracGame implements ActionListener{
 	
-	private static JLabel userLabel;
+	//Login
+	private static JLabel userLabel, passwordLabel, statusLabel;
 	private static JTextField userText;
-	private static JLabel passwordLabel;
 	private static JPasswordField passwordText;
 	private static JButton loginButton;
-	private static JButton exitButton;
-	private static JLabel success;
-	private static JLabel statusLabel;
 	
-	private static int numerator1, numerator2;
-	private static int denominator1, denominator2;
-	private static int operator;
+	//Start
+	private static JButton hint;
+	private static JTextField txtNum1, txtNum2, txtDen1, txtDen2, txtAnswerNum, txtAnswerDen;
+	private static JLabel currentEquation,lblOp;
 	
-	private static String username, password, firstName, lastName;
+	private static int numerator1, numerator2, denominator1, denominator2, answerNum, answerDen, operator;
+	
+	private static String username, password;
 	
 	//static Scanner userInput = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		testLogin();
+		//login();
+		startGame();
 		//randGen();
 		
 	}
 	
 	private static void startGame() {
-		JFrame mainDisplay = new JFrame("Fraction Game");
-		mainDisplay.setSize(1280, 720);
-		mainDisplay.setLocationRelativeTo(null);
-		mainDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JFrame gameFrame = new JFrame("Fraction Game");
+		gameFrame.setSize(400, 300);
+		gameFrame.setLocationRelativeTo(null);
+		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel mainPanel = new JPanel(new GridLayout(1,1));
-		JPanel equationPanel = new JPanel();
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(null);
+		gameFrame.add(mainPanel);
+		mainPanel.setBackground(Color.blue);
+
+		currentEquation = new JLabel("1/2 + 1/2");
+		currentEquation.setFont(new Font("Serif", Font.BOLD, 30));
+		currentEquation.setForeground(Color.white);
+		currentEquation.setBounds(135, 35, 300, 25);
+		mainPanel.add(currentEquation);
 		
-		JLabel currentEquation = new JLabel();
-		equationPanel.add(currentEquation);
+		hint = new JButton();
+		hint = new JButton("Step 1: Find The Common Denominator");
+		hint.setBounds(50, 70, 280, 25);
+		mainPanel.add(hint);
+
+		txtNum1 = new JTextField();
+		txtNum1.setBounds(30, 150, 80, 25);
+		mainPanel.add(txtNum1);
 		
-		//JPanel processPanel = new JPanel();
-		//JPanel answerPanel = new JPanel();
+		txtDen1 = new JTextField();
+		txtDen1.setBounds(30, 200, 80, 25);
+		mainPanel.add(txtDen1);
 		
-		mainDisplay.setContentPane(mainPanel);
-		mainDisplay.setVisible(true);
+		lblOp = new JLabel("+");
+		lblOp.setFont(new Font("Serif", Font.BOLD, 30));
+		lblOp.setForeground(Color.white);
+		lblOp.setBounds(114, 175, 150, 25);
+		mainPanel.add(lblOp);
+		
+		txtNum2 = new JTextField();
+		txtNum2.setBounds(135, 150, 80, 25);
+		mainPanel.add(txtNum2);
+
+		txtDen2 = new JTextField();
+		txtDen2.setBounds(135, 200, 80, 25);
+		mainPanel.add(txtDen2);
+		
+		JLabel equalsSign = new JLabel("=");
+		equalsSign.setFont(new Font("Serif", Font.BOLD, 30));
+		equalsSign.setForeground(Color.white);
+		equalsSign.setBounds(234, 175, 150, 25);
+		mainPanel.add(equalsSign);
+		
+		txtAnswerNum = new JTextField();
+		txtAnswerNum.setBounds(270, 150, 80, 25);
+		mainPanel.add(txtAnswerNum);
+
+		txtAnswerDen = new JTextField();
+		txtAnswerDen.setBounds(270, 200, 80, 25);
+		mainPanel.add(txtAnswerDen);
+		
+		gameFrame.setContentPane(mainPanel);
+		gameFrame.setVisible(true);
 	}
 	
-	private static void login(){
-		JFrame mainDisplay = new JFrame("Fraction Game");
-		mainDisplay.setSize(350, 200);
-		mainDisplay.setLocationRelativeTo(null);
-		mainDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	private static void login() {
+		JFrame loginFrame = new JFrame();
+		loginFrame.setSize(400, 150);
+		loginFrame.setLocationRelativeTo(null);
+		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel pnlButtons = new JPanel();
-		//GridBagConstraints pnlButtonCons = new GridBagConstraints();
-		JLabel enterUsername = new JLabel("Username: ");
-		enterUsername.setBounds(10, 20, 80, 25);
-		pnlButtons.add(enterUsername);
-		
-		JTextField enterUser = new JTextField("Enter username...");
-		enterUser.setBounds(100, 20, 165, 25);
-		pnlButtons.add(enterUser);
-		
-		JLabel enterPassword = new JLabel("Password: ");
-		enterPassword.setBounds(10, 50, 80, 25);
-		pnlButtons.add(enterPassword);
-		
-		JTextField enterPass = new JTextField("Enter password...");
-		enterPass.setBounds(100, 20, 165, 25);
-		pnlButtons.add(enterPass);
-		
-		//JTextField enterPass = new JTextField("Enter password...");
-		
-		JButton login = new JButton("Log In");
-		login.setPreferredSize(new Dimension(40, 40));
-		
-		JButton exit = new JButton("Exit");
-		exit.setPreferredSize(new Dimension(40, 40));
-		
-		//pnlButtons.add(enterUser);
-		//pnlButtons.add(enterPass);
-		//pnlButtons.add(login);
-		//pnlButtons.add(exit);
-		//login.addActionListener((ActionListener) login);
-		mainDisplay.add(pnlButtons);
-		mainDisplay.setVisible(true);
-	}
-	
-	private static void testLogin() {
-		JFrame frame = new JFrame();
-		frame.setSize(400, 150);
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		frame.add(panel);
+		JPanel loginPanel = new JPanel();
+		loginPanel.setLayout(null);
+		loginFrame.add(loginPanel);
 		
 		userLabel = new JLabel("Username: ");
 		userLabel.setBounds(10, 20, 80, 25);
-		panel.add(userLabel);
+		loginPanel.add(userLabel);
 		
 		userText = new JTextField();
 		userText.setBounds(100, 20, 165, 25);
-		panel.add(userText);
+		loginPanel.add(userText);
 		
 		loginButton = new JButton("Login");
 		loginButton.setBounds(300, 20, 80, 25);
 		loginButton.addActionListener(new fracGame());
-		panel.add(loginButton);
+		loginPanel.add(loginButton);
 		
 		passwordLabel = new JLabel("Password: ");
 		passwordLabel.setBounds(10, 50, 80, 25);
-		panel.add(passwordLabel);
+		loginPanel.add(passwordLabel);
 		
 		passwordText = new JPasswordField();
 		passwordText.setBounds(100, 50, 165, 25);
-		panel.add(passwordText);
+		loginPanel.add(passwordText);
 		
 		statusLabel = new JLabel("");
 		statusLabel.setBounds(110, 80, 200, 25);
-		panel.add(statusLabel);
+		loginPanel.add(statusLabel);
 		
-		exitButton = new JButton("Exit");
-		exitButton.setBounds(300, 50, 80, 25);
-		exitButton.addActionListener(new fracGame());
-		panel.add(exitButton);
-		
-		frame.setVisible(true);
+		loginFrame.pack();
+		loginFrame.setVisible(true);
 	}
 	
 	private static int inputCheck() {
@@ -167,6 +163,7 @@ public class fracGame implements ActionListener{
 			return 5;
 		}
 	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -191,21 +188,8 @@ public class fracGame implements ActionListener{
 			case 5: 
 				statusLabel.setText("Invalid username and password.");
 				break;
-			}
-			
+			}	
 		}
-		
 	}
-	
-	
-	
-	//private static int randGen() {
-	//Random randomGen = new Random();
-		
-	//numerator1 = randomGen.nextInt(9) + 1;
-	//numerator2 = randomGen.nextInt(9) + 1;
-	//denominator1 = randomGen.nextInt(9) + 1;
-	//denominator2 = randomGen.nextInt(9) + 1;
-	//operator = randomGen.nextInt(1);
-	//}
+
 }
