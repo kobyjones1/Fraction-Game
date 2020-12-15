@@ -11,15 +11,19 @@ import javax.swing.JTextField;
 
 public class startGame implements ActionListener{
 	
+	private JFrame gameFrame;
 	public static JButton btnDenominator, numSubmit;
 	public static JTextField txtNum1, txtNum2, txtDen1, txtDen2, txtAnswerNum, txtAnswerDen;
 	public static JLabel currentEquation,lblOp, status;
 	private static String currEq, currOp;
 	private static int questionNum1, questionDen1, questionNum2, questionDen2, lcd; 
-	private static int numerator1, numerator2, answerNum, operator;
+	private static int numerator1, numerator2, answerNum, operator, count, amountOfQuestions;
 	
 	public startGame() {
-		JFrame gameFrame = new JFrame("Fraction Game");
+		amountOfQuestions = 3;
+		count = 0;
+		
+		gameFrame = new JFrame("Fraction Game");
 		gameFrame.setSize(400, 300);
 		gameFrame.setLocationRelativeTo(null);
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,6 +44,7 @@ public class startGame implements ActionListener{
 		btnDenominator = new JButton("Find The Least Common Denominator");
 		btnDenominator.addActionListener(this);
 		btnDenominator.setBounds(50, 70, 280, 25);
+		btnDenominator.setEnabled(true);
 		mainPanel.add(btnDenominator);
 		
 		txtNum1 = new JTextField();
@@ -119,8 +124,6 @@ public class startGame implements ActionListener{
 		questionNum2 = randGen(9);
 		questionDen2 = randGen(9);
 		operator = randGen(1);
-		
-		//btnDenominator.setEnabled(true);
 
 		if(operator == 1) {
 			currOp = "+";
@@ -131,13 +134,74 @@ public class startGame implements ActionListener{
 		
 		currEq = questionNum1 + "/" + questionDen1 + " " + currOp + " " + questionNum2 + "/" + questionDen2 + " = ?";
 	}
-
+	
+	private static int inputCheck() {
+		String num1, num2, aNum;
+		
+		num1 = txtNum1.getText();
+		num2 = txtNum1.getText();
+		aNum = txtAnswerNum.getText();
+		
+		if(num1 == String.valueOf(numerator1) && num2 == String.valueOf(numerator2) && aNum == String.valueOf(answerNum))	//Correct answer.
+			return 1;
+		
+		if(num1 == "" || num2 == "" || aNum == "")	//Empty values.
+			return 2;
+		
+		if(num1 != String.valueOf(numerator1)) {	//Wrong num1, num2, and/or aNum.
+			if(num2 != String.valueOf(numerator2)) {
+				if(aNum != String.valueOf(answerNum)){
+					return 3;
+				}
+				return 4;
+			}
+			return 5;
+		}
+		
+		if(num2 != String.valueOf(numerator2)) { 	//Wrong num2 and/or aNum.
+			if(aNum != String.valueOf(answerNum)){
+				return 6;
+			}
+			return 7;
+		}
+		
+		return 8;	//Wrong aNum.		
+	}
+	
+	private static void reset() {
+		newQuestion();
+		
+		btnDenominator.setEnabled(true);
+		
+		txtNum1.setEditable(false);
+		txtNum1.setBackground(Color.lightGray);
+		
+		txtNum2.setEditable(false);
+		txtNum2.setBackground(Color.lightGray);
+		
+		txtAnswerNum.setEditable(false);
+		txtAnswerNum.setBackground(Color.lightGray);
+		
+		txtDen1.setEditable(false);
+		txtDen1.setBackground(Color.lightGray);
+		
+		txtDen2.setEditable(false);
+		txtDen2.setBackground(Color.lightGray);
+		
+		txtAnswerDen.setEditable(false);
+		txtAnswerDen.setBackground(Color.lightGray);
+		
+		status.setText("");
+		
+		numSubmit.setVisible(false);
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnDenominator) {
 			btnDenominator.setEnabled(false);
 			findDenominator findDen = new findDenominator(questionDen1, questionDen2);
 			
-			lcd = findDenominator.findLCD(questionDen1, questionDen2);
+			lcd = findDen.findLCD(questionDen1, questionDen2);
 			numerator1 = questionNum1 * (lcd/questionDen1);
 			numerator2 = questionNum2 * (lcd/questionDen2);
 			
@@ -146,6 +210,49 @@ public class startGame implements ActionListener{
 			}
 			else{
 				answerNum = numerator1 - numerator2;
+			}
+		}
+		
+		if(e.getSource() == numSubmit) {
+			int switchState = inputCheck();
+			
+			switch(switchState) {
+			case 1: 
+				if(count < amountOfQuestions) {
+					count++;
+					reset();
+					break;
+				}
+				else {
+					gameFrame.dispose();
+					gameOver gameOver = new gameOver();
+					break;
+				}
+			case 2: 
+				status.setText("Each textbox requires an answer.");
+				break;
+			case 3: 
+				txtNum1.setBackground(Color.red);
+				txtNum2.setBackground(Color.red);
+				txtAnswerNum.setBackground(Color.red);
+				break;
+			case 4: 
+				txtNum1.setBackground(Color.red);
+				txtNum2.setBackground(Color.red);
+				break;
+			case 5: 
+				txtNum1.setBackground(Color.red);
+				break;
+			case 6: 
+				txtNum2.setBackground(Color.red);
+				txtAnswerNum.setBackground(Color.red);
+				break;
+			case 7: 
+				txtNum2.setBackground(Color.red);
+				break;
+			case 8: 
+				txtAnswerNum.setBackground(Color.red);
+				break;
 			}
 		}
 	}

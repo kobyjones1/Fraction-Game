@@ -72,7 +72,7 @@ public class findDenominator implements ActionListener{
 		denFrame.setVisible(true);
 	}
 	
-	public static int findLCD(int den1, int den2) {
+	public int findLCD(int den1, int den2) {
 		int larger = Math.max(den1, den2);
 		int smaller = Math.min(den1, den2);
 		int lcd = larger;
