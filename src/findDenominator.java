@@ -10,105 +10,98 @@ import javax.swing.SwingUtilities;
 
 public class findDenominator implements ActionListener{
 	
-	private JFrame denFrame;
-	private JButton submit;
-	private JTextField userAnswer;
-	private JLabel status;
+	private JFrame frmFindDen;
+	private JButton btnSubmit;
+	private JTextField txtUserAnswer;
+	private JLabel lblStatus;
 	private static int intDen1, intDen2;
 	
-	public findDenominator(int den1, int den2) {
-		intDen1 = den1;
-		intDen2 = den2;
+	public findDenominator(int intQuesDen1, int intQuesDen2) {
+		intDen1 = intQuesDen1;
+		intDen2 = intQuesDen2;
 		
-		denFrame = new JFrame("Fraction Game");
-		denFrame.setSize(500, 300);
-		denFrame.setLocationRelativeTo(null);
-		denFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmFindDen = new JFrame("Fraction Game");	//Launches the findDenominator window.
+		frmFindDen.setSize(500, 300);
+		frmFindDen.setLocationRelativeTo(null);
+		frmFindDen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel denPanel = new JPanel();
-		denPanel.setLayout(null);
-		denFrame.add(denPanel);
-		denPanel.setBackground(Color.blue);
+		JPanel pnlFindDen = new JPanel();
+		pnlFindDen.setLayout(null);
+		frmFindDen.add(pnlFindDen);
+		pnlFindDen.setBackground(Color.blue);
 		
-		String LCDTip1 = "Enter the LCD of the two numbers shown.";
-		String LCDTip2 = "The LCD is the smallest number that both numbers will divide into evenly.";
+		String strLCD1 = "Enter the LCD of the two numbers shown.";
+		String strLCD2 = "The LCD is the smallest number that both numbers will divide into evenly.";
 		
-		JLabel lblTip1 = new JLabel(LCDTip1);
+		JLabel lblTip1 = new JLabel(strLCD1);	//Displays directions for obtaining the LCD here.
 		lblTip1.setBounds(120, 20, 300, 25);
 		lblTip1.setForeground(Color.white);
-		denPanel.add(lblTip1);
+		pnlFindDen.add(lblTip1);
 		
-		JLabel lblTip2 = new JLabel(LCDTip2);
+		JLabel lblTip2 = new JLabel(strLCD2);	//Displays a hint to the user.
 		lblTip2.setBounds(35, 40, 430, 25);
 		lblTip2.setForeground(Color.white);
-		denPanel.add(lblTip2);
+		pnlFindDen.add(lblTip2);
 		
-		String strDen1 = String.valueOf(intDen1);
-		String strDen2 = String.valueOf(intDen2);
-		
-		JTextField LCDDen1 = new JTextField(strDen1);
+		JTextField LCDDen1 = new JTextField(String.valueOf(intDen1));	//Displays the first denominator.
 		LCDDen1.setEditable(false);
 		LCDDen1.setBounds(160, 100, 50, 25);
-		denPanel.add(LCDDen1);
+		pnlFindDen.add(LCDDen1);
 		
-		JTextField LCDDen2 = new JTextField(strDen2);
+		JTextField LCDDen2 = new JTextField(String.valueOf(intDen2));	//Displays the second denominator.
 		LCDDen2.setEditable(false);
 		LCDDen2.setBounds(260, 100, 50, 25);
-		denPanel.add(LCDDen2);
+		pnlFindDen.add(LCDDen2);
 
-		userAnswer = new JTextField();
-		userAnswer.setBounds(198, 155, 75, 20);
-		denPanel.add(userAnswer);
+		txtUserAnswer = new JTextField();	//Responsible for taking the user's input.
+		txtUserAnswer.setBounds(198, 155, 75, 25);
+		pnlFindDen.add(txtUserAnswer);
 
-		SwingUtilities.invokeLater(new Runnable() { 
+		SwingUtilities.invokeLater(new Runnable() {	//Places the focus (blinking cursor) on the text field. 
 			public void run() { 
-				userAnswer.requestFocus(); 
+				txtUserAnswer.requestFocus(); 
 			} 
         }); 
 		
-		submit = new JButton("Submit");
-		submit.setBounds(198, 180, 75, 25);
-		submit.addActionListener(this);
-		denPanel.add(submit);
+		btnSubmit = new JButton("Submit");	//Button responsible for checking if the user's answer is correct.
+		btnSubmit.setBounds(198, 180, 75, 25);
+		btnSubmit.addActionListener(this);
+		pnlFindDen.add(btnSubmit);
 		
-		status = new JLabel("");
-		status.setBounds(190, 205, 200, 25);
-		status.setForeground(Color.white);
-		denPanel.add(status);
+		lblStatus = new JLabel("");	//Tells the user if their answer is incorrect or if no input was detected.
+		lblStatus.setBounds(190, 205, 200, 25);
+		lblStatus.setForeground(Color.white);
+		pnlFindDen.add(lblStatus);
 		
-		denFrame.getRootPane().setDefaultButton(submit);
+		frmFindDen.getRootPane().setDefaultButton(btnSubmit);	//Allows the user to activate the "btnSubmit" button with the ENTER key.
 		
-		denFrame.add(denPanel);
-		denFrame.setVisible(true);
+		frmFindDen.add(pnlFindDen);
+		frmFindDen.setVisible(true);
 	}
-	
-	public void run() {
-        userAnswer.requestFocus();
-     }
-	
-	public static int findLCD(int den1, int den2) {
-		int larger = Math.max(den1, den2);
-		int smaller = Math.min(den1, den2);
-		int lcd = larger;
+
+	public static int findLCD(int intDen1, int intDen2) {	//Finds the least common denominator of the two denominator values.
+		int intLargerNum = Math.max(intDen1, intDen2);
+		int intSmallerNum = Math.min(intDen1, intDen2);
+		int intLCD = intLargerNum;
 		
-		while(lcd % smaller != 0) {
-			lcd += larger;
+		while(intLCD % intSmallerNum != 0) {	//Loops until the smaller number divides evenly into the larger number.
+			intLCD += intLargerNum;
 		}
 		
-		return lcd;
+		return intLCD;
 	}
 	
-	private static void close(int lcd) {
-		startGame.txtDen1.setText(String.valueOf(lcd));
+	private static void close(int intLCD) {	//Prepares the startGame window's numerator and denominator text fields when findDenominator closes.
+		startGame.txtDen1.setText(String.valueOf(intLCD));	//Display the LCD as the denominator on each fraction.
 		startGame.txtDen1.setBackground(Color.green);
 		
-		startGame.txtDen2.setText(String.valueOf(lcd));
+		startGame.txtDen2.setText(String.valueOf(intLCD));
 		startGame.txtDen2.setBackground(Color.green);
 		
-		startGame.txtAnswerDen.setText(String.valueOf(lcd));
+		startGame.txtAnswerDen.setText(String.valueOf(intLCD));
 		startGame.txtAnswerDen.setBackground(Color.green);
 		
-		startGame.txtNum1.setBackground(Color.white);
+		startGame.txtNum1.setBackground(Color.white);	//Activate the numerator text fields.
 		startGame.txtNum1.setEditable(true);
 		
 		startGame.txtNum2.setBackground(Color.white);
@@ -117,24 +110,23 @@ public class findDenominator implements ActionListener{
 		startGame.txtAnswerNum.setBackground(Color.white);
 		startGame.txtAnswerNum.setEditable(true);
 		
-		startGame.numSubmit.setVisible(true);
-		startGame.status.setVisible(true);
+		startGame.btnNumSubmit.setVisible(true);	//Displays the submit button.
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == submit) {
-			int lcd = findLCD(intDen1, intDen2);
+		if(e.getSource() == btnSubmit) {
+			int intLCD = findLCD(intDen1, intDen2);
 
-			if(userAnswer.getText().equals(String.valueOf(lcd))) {
-				denFrame.dispose();
-				close(lcd);
+			if(txtUserAnswer.getText().equals(String.valueOf(intLCD))) {	//Closes findDenominator if the user's answer is correct.
+				frmFindDen.dispose();
+				close(intLCD);
 			}
-			else if(userAnswer.getText().equals("")) {
-				status.setText("No input detected.");
+			else if(txtUserAnswer.getText().equals("")) {	//Tells the user if there's no data in the text field.
+				lblStatus.setText("No input detected.");
 			}
 			else {
-				userAnswer.setBackground(Color.red);
-				status.setText(userAnswer.getText() + " is incorrect.");
+				txtUserAnswer.setBackground(Color.red);
+				lblStatus.setText(txtUserAnswer.getText() + " is incorrect.");	//Tells the user if their answer is incorrect.
 			}
 		}
 	}

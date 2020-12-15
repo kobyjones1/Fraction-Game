@@ -9,58 +9,58 @@ import javax.swing.JPanel;
 
 public class gameOver implements ActionListener {
 	
-	private static JFrame gameOverScreen;
-	private static JButton startOver, logOut, close;
+	private static JFrame frmGameOver;
+	private static JButton btnStartOver, btnLogout, btnClose;
 	
 	public gameOver() {
-		gameOverScreen = new JFrame("Fraction Game");
-		gameOverScreen.setSize(400, 300);
-		gameOverScreen.setLocationRelativeTo(null);
-		gameOverScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmGameOver = new JFrame("Fraction Game");	//Launches the gameOver screen.
+		frmGameOver.setSize(400, 300);
+		frmGameOver.setLocationRelativeTo(null);
+		frmGameOver.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel gameOverPanel = new JPanel();
-		gameOverPanel.setLayout(null);
-		gameOverPanel.setBackground(Color.blue);
-		gameOverScreen.add(gameOverPanel);
+		JPanel pnlGameOver = new JPanel();
+		pnlGameOver.setLayout(null);
+		pnlGameOver.setBackground(Color.blue);
+		frmGameOver.add(pnlGameOver);
 		
-		JLabel gameOverMessage = new JLabel("Game Over!");
-		gameOverMessage.setBounds(100, 80, 200, 25);
-		gameOverMessage.setFont(new Font("Arial", Font.BOLD, 30));
-		gameOverMessage.setForeground(Color.green);
-		gameOverPanel.add(gameOverMessage);
+		JLabel lblGameOver = new JLabel("Game Over!");	//Displays the "Game Over!" text on the screen.
+		lblGameOver.setBounds(100, 80, 200, 25);
+		lblGameOver.setFont(new Font("Arial", Font.BOLD, 30));
+		lblGameOver.setForeground(Color.green);
+		pnlGameOver.add(lblGameOver);
 		
-		startOver = new JButton("Start Over");
-		startOver.setBounds(30, 150, 95, 25);
-		startOver.addActionListener(this);
-		gameOverPanel.add(startOver);
+		btnStartOver = new JButton("Start Over");	//Starts the game over.
+		btnStartOver.setBounds(30, 150, 95, 25);
+		btnStartOver.addActionListener(this);
+		pnlGameOver.add(btnStartOver);
 		
-		logOut = new JButton("Log Out");
-		logOut.setBounds(150, 150, 80, 25);
-		logOut.addActionListener(this);
-		gameOverPanel.add(logOut);
+		btnLogout = new JButton("Log Out");	//Takes the user back to the login window.
+		btnLogout.setBounds(150, 150, 80, 25);
+		btnLogout.addActionListener(this);
+		pnlGameOver.add(btnLogout);
 		
-		close = new JButton("Close");
-		close.setBounds(255, 150, 80, 25);
-		close.addActionListener(this);
-		gameOverPanel.add(close);
+		btnClose = new JButton("Close");	//Exits the game.
+		btnClose.setBounds(255, 150, 80, 25);
+		btnClose.addActionListener(this);
+		pnlGameOver.add(btnClose);
 
-		gameOverScreen.add(gameOverPanel);
-		gameOverScreen.setVisible(true);
+		frmGameOver.add(pnlGameOver);
+		frmGameOver.setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == startOver) {
-			gameOverScreen.dispose();
-			startGame start = new startGame();
+		if(e.getSource() == btnStartOver) {	//Starts the game over.
+			frmGameOver.dispose();
+			startGame launchStartGame = new startGame();
 		}
 		
-		if(e.getSource() == logOut) {
-			gameOverScreen.dispose();
-			login login = new login();
+		if(e.getSource() == btnLogout) {	//Launches the login window.
+			frmGameOver.dispose();
+			login launchLogin = new login();
 		}
 		
-		if(e.getSource() == close) {
-			gameOverScreen.dispose();
+		if(e.getSource() == btnClose) {	//Closes the game.
+			frmGameOver.dispose();
 		}
 	}
 }

@@ -9,97 +9,97 @@ import javax.swing.JTextField;
 
 public class login implements ActionListener{
 	
-	JFrame loginFrame;
-	private JLabel userLabel, passwordLabel, statusLabel;
-	private JTextField userText;
-	private JPasswordField passwordText;
-	private JButton loginButton;
-	private static String username, password;
+	JFrame frmLogin;
+	private JLabel lblUser, lblPassword, lblStatus;
+	private JTextField txtUser;
+	private JPasswordField txtPassword;
+	private JButton btnLogin;
+	private static String strUsername, strPassword;
 	
 	public login() {
-		loginFrame = new JFrame("Fraction Game");
-		loginFrame.setSize(400, 150);
-		loginFrame.setLocationRelativeTo(null);
-		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLogin = new JFrame("Fraction Game");	//Launches the login window.
+		frmLogin.setSize(400, 150);
+		frmLogin.setLocationRelativeTo(null);
+		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel loginPanel = new JPanel();
-		loginPanel.setLayout(null);
-		loginFrame.add(loginPanel);
+		JPanel pnlLogin = new JPanel();
+		pnlLogin.setLayout(null);
+		frmLogin.add(pnlLogin);
 		
-		userLabel = new JLabel("Username: ");
-		userLabel.setBounds(10, 20, 80, 25);
-		loginPanel.add(userLabel);
+		lblUser = new JLabel("Username: ");	//Username label.
+		lblUser.setBounds(10, 20, 80, 25);
+		pnlLogin.add(lblUser);
 		
-		userText = new JTextField();
-		userText.setBounds(100, 20, 165, 25);
-		loginPanel.add(userText);
+		txtUser = new JTextField();	//Text field for taking the user's username.
+		txtUser.setBounds(100, 20, 165, 25);
+		pnlLogin.add(txtUser);
 		
-		loginButton = new JButton("Login");
-		loginButton.setBounds(300, 20, 80, 25);
-		loginButton.addActionListener(this);
-		loginPanel.add(loginButton);
+		btnLogin = new JButton("Login");	//Login button.
+		btnLogin.setBounds(300, 20, 80, 25);
+		btnLogin.addActionListener(this);
+		pnlLogin.add(btnLogin);
 		
-		passwordLabel = new JLabel("Password: ");
-		passwordLabel.setBounds(10, 50, 80, 25);
-		loginPanel.add(passwordLabel);
+		lblPassword = new JLabel("Password: ");	//Password label.
+		lblPassword.setBounds(10, 50, 80, 25);
+		pnlLogin.add(lblPassword);
 		
-		passwordText = new JPasswordField();
-		passwordText.setBounds(100, 50, 165, 25);
-		loginPanel.add(passwordText);
+		txtPassword = new JPasswordField();	//Text field for taking the user's password.
+		txtPassword.setBounds(100, 50, 165, 25);
+		pnlLogin.add(txtPassword);
 		
-		statusLabel = new JLabel("");
-		statusLabel.setBounds(110, 80, 200, 25);
-		loginPanel.add(statusLabel);
+		lblStatus = new JLabel("");	//Tells the user why their input is invalid.
+		lblStatus.setBounds(110, 80, 200, 25);
+		pnlLogin.add(lblStatus);
 		
 		
-		loginFrame.getRootPane().setDefaultButton(loginButton);
+		frmLogin.getRootPane().setDefaultButton(btnLogin);	//Allow the user to activate the "loginbutton" with the ENTER key.
 		
-		loginFrame.setVisible(true);
+		frmLogin.setVisible(true);
 	}
 	
-	private static int inputCheck() {
-		String userTest = "Test";
-		String userPass = "test";
+	private static int inputCheck() {	//Checks to make sure the user's input is valid.
+		String strUser = "Test";
+		String strPass = "test";
 		
-		if(username.equals(userTest) && password.equals(userPass))	//Login successful.
+		if(strUsername.equals(strUser) && strPassword.equals(strPass))	//Login successful.
 			return 1;
-		if(username.equals(userTest) != true && username.equals("") != true) 	//Wrong username.
+		if(strUsername.equals(strUser) != true && strUsername.equals("") != true) 	//Wrong username.
 			return 2;
-		if(username.equals(userTest) && password.equals(userPass) != true) 	//Username accepted, wrong password.
+		if(strUsername.equals(strUser) && strPassword.equals(strPass) != true) 	//Username accepted, wrong password.
 			return 3;
-		if(username.equals(userTest) && password.equals("")) 	//Username accepted, empty password.
+		if(strUsername.equals(strUser) && strPassword.equals("")) 	//Username accepted, empty password.
 			return 4;
-		if(username.equals("") && password.equals(""))  //Both empty.
+		if(strUsername.equals("") && strPassword.equals(""))  //Both empty.
 			return 4;
-		if(username.equals(userTest) != true && password.equals(userPass) != true) 	//Both invalid.
+		if(strUsername.equals(strUser) != true && strPassword.equals(strPass) != true) 	//Both invalid.
 			return 5;
 
 		return 5;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == loginButton) {
-			username = userText.getText();
-			password = passwordText.getText();
+		if(e.getSource() == btnLogin) {	//Sets the logic for the "btnLogin"
+			strUsername = txtUser.getText();
+			strPassword = txtPassword.getText();
 			
-			int statusSwitch = inputCheck();
+			int switchState = inputCheck();	//Check to make sure the user's username and password are valid.
 			
-			switch(statusSwitch) {
+			switch(switchState) {
 			case 1: 
-				loginFrame.dispose();
-				startGame start = new startGame();
+				frmLogin.dispose();
+				startGame launchStartGame = new startGame();	//Start the game.
 				break;
 			case 2: 
-				statusLabel.setText("Username invalid.");
+				lblStatus.setText("Username invalid.");
 				break;
 			case 3: 
-				statusLabel.setText("Password invalid.");
+				lblStatus.setText("Password invalid.");
 				break;
 			case 4: 
-				statusLabel.setText("Both fields require input.");
+				lblStatus.setText("Both fields require input.");
 				break;
 			case 5: 
-				statusLabel.setText("Invalid username and password.");
+				lblStatus.setText("Invalid username and password.");
 				break;
 			}	
 		}

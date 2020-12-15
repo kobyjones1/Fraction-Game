@@ -11,319 +11,302 @@ import javax.swing.JTextField;
 
 public class startGame implements ActionListener{
 	
-	private static JFrame gameFrame;
-	public static JButton btnDenominator, numSubmit;
+	private static JFrame frmGame;
+	public static JButton btnDenominator, btnNumSubmit;
 	public static JTextField txtNum1, txtNum2, txtDen1, txtDen2, txtAnswerNum, txtAnswerDen;
-	public static JLabel currentEquation,lblOp, status;
-	private static String currEq, currOp;
-	private static int questionNum1, questionDen1, questionNum2, questionDen2, lcd; 
-	private static int numerator1, numerator2, answerNum, operator, count, amountOfQuestions;
+	public static JLabel lblCurrEq,lblOp, lblStatus;
+	private static String strCurrEq, strCurrOp;
+	private static int intQuesNum1, intQuesDen1, intQuesNum2, intQuesDen2, intLCD; 
+	private static int intUserNum1, intUserNum2, intUserANum, intOp, intQuesCount, intQuesAmount;
 	
 	public startGame() {
-		amountOfQuestions = 1;
-		count = 0;
+		intQuesAmount = 1;	//Sets the amount of iterations for the program.
+		intQuesCount = 0;	//	Responsible for maintaining the amountOfQuestions iterations.
 		
-		gameFrame = new JFrame("Fraction Game");
-		gameFrame.setSize(400, 300);
-		gameFrame.setLocationRelativeTo(null);
-		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmGame = new JFrame("Fraction Game");	//Launches the startGame window.
+		frmGame.setSize(400, 300);
+		frmGame.setLocationRelativeTo(null);
+		frmGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(null);
-		gameFrame.add(mainPanel);
-		mainPanel.setBackground(Color.blue);
+		JPanel pnlMain = new JPanel();
+		pnlMain.setLayout(null);
+		frmGame.add(pnlMain);
+		pnlMain.setBackground(Color.blue);
 		
-		currentEquation = new JLabel();
-		currentEquation.setFont(new Font("Serif", Font.BOLD, 30));
-		currentEquation.setForeground(Color.white);
-		currentEquation.setBounds(110, 35, 300, 25);
-		mainPanel.add(currentEquation);
+		lblCurrEq = new JLabel();	//Displays the current equation.
+		lblCurrEq.setFont(new Font("Serif", Font.BOLD, 30));
+		lblCurrEq.setForeground(Color.white);
+		lblCurrEq.setBounds(110, 35, 300, 25);
+		pnlMain.add(lblCurrEq);
 		
-		btnDenominator = new JButton("Find The Least Common Denominator");
+		btnDenominator = new JButton("Find The Least Common Denominator");	//Button responsible for launching findDenominator.
 		btnDenominator.addActionListener(this);
 		btnDenominator.setBounds(50, 70, 280, 25);
-		btnDenominator.setEnabled(true);
-		mainPanel.add(btnDenominator);
+		pnlMain.add(btnDenominator);
 		
-		txtNum1 = new JTextField();
+		txtNum1 = new JTextField();	//Text field for the first numerator.
 		txtNum1.setBounds(30, 150, 80, 25);
-		txtNum1.setEditable(false);
-		txtNum1.setBackground(Color.lightGray);
-		mainPanel.add(txtNum1);
+		pnlMain.add(txtNum1);
 		
-		txtDen1 = new JTextField();
+		txtDen1 = new JTextField();	//Text field for the first denominator.
 		txtDen1.setBounds(30, 200, 80, 25);
-		txtDen1.setEditable(false);
-		txtDen1.setBackground(Color.lightGray);
-		mainPanel.add(txtDen1);
+		pnlMain.add(txtDen1);
 		
-		lblOp = new JLabel(currOp);
-		currOp = "+";
+		lblOp = new JLabel();	//Displays the current operator.
 		lblOp.setFont(new Font("Serif", Font.BOLD, 30));
 		lblOp.setForeground(Color.white);
 		lblOp.setBounds(114, 175, 150, 25);
-		mainPanel.add(lblOp);
+		pnlMain.add(lblOp);
 		
-		txtNum2 = new JTextField();
+		txtNum2 = new JTextField();	//Text field for the second numerator.
 		txtNum2.setBounds(135, 150, 80, 25);
-		txtNum2.setEditable(false);
-		txtNum2.setBackground(Color.lightGray);
-		mainPanel.add(txtNum2);
+		pnlMain.add(txtNum2);
 
-		txtDen2 = new JTextField();
+		txtDen2 = new JTextField();	//Text field for the second denominator.
 		txtDen2.setBounds(135, 200, 80, 25);
-		txtDen2.setEditable(false);;
-		txtDen2.setBackground(Color.lightGray);
-		mainPanel.add(txtDen2);
+		pnlMain.add(txtDen2);
 		
-		JLabel equalsSign = new JLabel("=");
-		equalsSign.setFont(new Font("Serif", Font.BOLD, 30));
-		equalsSign.setForeground(Color.white);
-		equalsSign.setBounds(234, 175, 150, 25);
-		mainPanel.add(equalsSign);
+		JLabel lblEqualSign = new JLabel("=");	//Displays the equal sign.
+		lblEqualSign.setFont(new Font("Serif", Font.BOLD, 30));
+		lblEqualSign.setForeground(Color.white);
+		lblEqualSign.setBounds(234, 175, 150, 25);
+		pnlMain.add(lblEqualSign);
 		
-		txtAnswerNum = new JTextField();
+		txtAnswerNum = new JTextField();	//Text field for the numerator answer.
 		txtAnswerNum.setBounds(270, 150, 80, 25);
-		txtAnswerNum.setEditable(false);
-		txtAnswerNum.setBackground(Color.lightGray);
-		mainPanel.add(txtAnswerNum);
+		pnlMain.add(txtAnswerNum);
 
-		txtAnswerDen = new JTextField();
+		txtAnswerDen = new JTextField();	//Text field for the denominator answer.
 		txtAnswerDen.setBounds(270, 200, 80, 25);
-		txtAnswerDen.setEditable(false);
-		txtAnswerDen.setBackground(Color.lightGray);
-		mainPanel.add(txtAnswerDen);
+		pnlMain.add(txtAnswerDen);
 		
-		status = new JLabel();
-		status.setFont(new Font("Serif", Font.BOLD, 15));
-		status.setForeground(Color.white);
-		status.setBounds(30, 233, 400, 25);
-		status.setVisible(false);
-		mainPanel.add(status);
+		lblStatus = new JLabel();	//Tells the user if they didn't enter any data.
+		lblStatus.setFont(new Font("Serif", Font.BOLD, 15));
+		lblStatus.setForeground(Color.white);
+		lblStatus.setBounds(30, 233, 400, 25);
+		pnlMain.add(lblStatus);
 		
-		numSubmit = new JButton("Submit");
-		numSubmit.addActionListener(this);
-		numSubmit.setBounds(270, 233, 80, 25);
-		numSubmit.setVisible(false);
-		mainPanel.add(numSubmit);		
+		btnNumSubmit = new JButton("Submit");	//Button responsible for checking if the user's answers are correct.
+		btnNumSubmit.addActionListener(this);
+		btnNumSubmit.setBounds(270, 233, 80, 25);
+		btnNumSubmit.setVisible(false);
+		pnlMain.add(btnNumSubmit);		
 		
-		reset();
+		reset();	//Clear old data, then generate a new question.
 		
-		gameFrame.getRootPane().setDefaultButton(numSubmit);
+		frmGame.getRootPane().setDefaultButton(btnNumSubmit);	//Allows the user to activate the "btnNumSubmit" button with the ENTER key.
 		
-		gameFrame.setContentPane(mainPanel);
-		gameFrame.setVisible(true);
+		frmGame.setContentPane(pnlMain);
+		frmGame.setVisible(true);
 	}
 	
-	private static int randGen(int limit) {
+	private static int randGen(int intLimit) {	//Generate the numbers for the problem.
 		Random randomNum = new Random();
-		return randomNum.nextInt(limit) + 1;
+		return randomNum.nextInt(intLimit) + 1;	//+1 to avoid getting 0;
 	}
 
-	private static void newQuestion() {
-		questionNum1 = randGen(9);
-		questionDen1 = randGen(9);
-		questionNum2 = randGen(9);
-		questionDen2 = randGen(9);
-		operator = randGen(2);
+	private static void newQuestion() {	//Generates the problem for the user to solve.
+		intQuesNum1 = randGen(9);
+		intQuesDen1 = randGen(9);
+		intQuesNum2 = randGen(9);
+		intQuesDen2 = randGen(9);
+		intOp = randGen(2);
 
-		if(operator == 1) {
-			currOp = "+";
-		}
-		else {
-			currOp = "-";
-		}
+		if(intOp == 1)	//Randomly determine whether the user will add or subtract the fractions.
+			strCurrOp = "+";
+		else
+			strCurrOp = "-";
 		
-		currEq = questionNum1 + "/" + questionDen1 + " " + currOp + " " + questionNum2 + "/" + questionDen2 + " = ?";
+		strCurrEq = intQuesNum1 + "/" + intQuesDen1 + " " + strCurrOp + " " + intQuesNum2 + "/" + intQuesDen2 + " = ?";	//Builds the equation string.
 	}
 	
-	private static int inputCheck() {
-		String num1 = String.valueOf(numerator1);
-		String num2 = String.valueOf(numerator2);
-		String aNum = String.valueOf(answerNum);
+	private static int inputCheck() {	//Checks if the user's input is correct, incorrect, or non existent.
+		String gameNum1 = String.valueOf(intUserNum1);	//Convert the game's correct answer to a string to compare with the user's answer.
+		String gameNum2 = String.valueOf(intUserNum2);
+		String gameANum = String.valueOf(intUserANum);
 		
-		String strNum1 = txtNum1.getText();
+		String strNum1 = txtNum1.getText();	//Convert the user's answer to a string.
 		String strNum2 = txtNum2.getText();
 		String strANum = txtAnswerNum.getText();
 		
-		boolean num1Correct = false;
-		boolean num2Correct = false;
-		boolean aNumCorrect = false;
-		boolean num1Empty = false;
-		boolean num2Empty = false;
-		boolean aNumEmpty = false;
+		boolean blNum1Correct = false;
+		boolean blNum2Correct = false;
+		boolean blANumCorrect = false;
+		boolean blEmptyNum1 = false;
+		boolean blEmptyNum2 = false;
+		boolean blEmptyANum = false;
 		
-		if(strNum1.equals(num1))
-			num1Correct = true;
+		if(strNum1.equals(gameNum1))	//Finds out if any text fields are empty and if they contain the correct answer.
+			blNum1Correct = true;
 		if(strNum1.equals(""))
-			num1Empty = true;	
-		if(strNum2.equals(num2))
-			num2Correct = true;		
+			blEmptyNum1 = true;	
+		if(strNum2.equals(gameNum2))
+			blNum2Correct = true;		
 		if(strNum2.equals(""))
-			num2Empty = true;		
-		if(strANum.equals(aNum))
-			aNumCorrect = true;		
+			blEmptyNum2 = true;		
+		if(strANum.equals(gameANum))
+			blANumCorrect = true;		
 		if(strANum.equals(""))
-			aNumEmpty = true;
+			blEmptyANum = true;
 		
-		if(num1Correct == true && num2Correct == true && aNumCorrect == true)	//All correct.
+		if(blNum1Correct == true && blNum2Correct == true && blANumCorrect == true)	//All correct.
 			return 1;	
-		if(num1Empty == true && num2Empty == true && aNumEmpty == true)	//All empty.
+		if(blEmptyNum1 == true && blEmptyNum2 == true && blEmptyANum == true)	//All empty.
 			return 2;	
-		if(num1Correct == true && num2Empty == true && aNumEmpty == true)	//Num1 correct.	(EMPTY INPUT CHECK)
+		if(blNum1Correct == true && blEmptyNum2 == true && blEmptyANum == true)	//Num1 correct.	(EMPTY INPUT CHECK)
 			return 3;		
-		if(num2Correct == true && num1Empty == true && aNumEmpty == true)	//Num2 correct.
+		if(blNum2Correct == true && blEmptyNum1 == true && blEmptyANum == true)	//Num2 correct.
 			return 4;	
-		if(aNumCorrect == true && num1Empty == true && num2Empty == true)	//aNum correct.
+		if(blANumCorrect == true && blEmptyNum1 == true && blEmptyNum2 == true)	//aNum correct.
 			return 5;		
-		if(num1Correct != true && num2Empty == true && aNumEmpty == true)	//Num1 incorrect.
+		if(blNum1Correct != true && blEmptyNum2 == true && blEmptyANum == true)	//Num1 incorrect.
 			return 11;		
-		if(num2Correct != true && num1Empty == true && aNumEmpty == true)	//Num2 incorrect.
+		if(blNum2Correct != true && blEmptyNum1 == true && blEmptyANum == true)	//Num2 incorrect.
 			return 13;		
-		if(aNumCorrect != true && num1Empty == true && num2Empty == true)	//aNum incorrect.
+		if(blANumCorrect != true && blEmptyNum1 == true && blEmptyNum2 == true)	//aNum incorrect.
 			return 14;		
-		if(num1Correct == true && num2Correct == true && aNumEmpty == true)	//Num1, Num2 correct. (EMPTY INPUT CHECK)
+		if(blNum1Correct == true && blNum2Correct == true && blEmptyANum == true)	//Num1, Num2 correct. (EMPTY INPUT CHECK)
 			return 6;		
-		if(num1Correct == true && num2Empty == true && aNumCorrect == true)	//Num1, aNum correct.
+		if(blNum1Correct == true && blEmptyNum2 == true && blANumCorrect == true)	//Num1, aNum correct.
 			return 8;	
-		if(num2Correct == true && num1Empty == true && aNumCorrect == true)	//Num2, aNum correct.
+		if(blNum2Correct == true && blEmptyNum1 == true && blANumCorrect == true)	//Num2, aNum correct.
 			return 7;
-		if(num1Correct != true && num2Correct != true && aNumEmpty == true)	//Num1, Num2 incorrect.
+		if(blNum1Correct != true && blNum2Correct != true && blEmptyANum == true)	//Num1, Num2 incorrect.
 			return 10;		
-		if(num1Correct != true && num2Empty == true && aNumCorrect != true)	//Num1, aNum incorrect.
+		if(blNum1Correct != true && blEmptyNum2 == true && blANumCorrect != true)	//Num1, aNum incorrect.
 			return 15;	
-		if(num2Correct != true && num1Empty == true && aNumCorrect != true)	//Num2, aNum incorrect.
+		if(blNum2Correct != true && blEmptyNum1 == true && blANumCorrect != true)	//Num2, aNum incorrect.
 			return 12;
 		
-		if(num1Correct == true && num2Correct != true && aNumCorrect != true)	//Num1 correct.	(WRONG ANSWER CHECK)
+		if(blNum1Correct == true && blNum2Correct != true && blANumCorrect != true)	//Num1 correct.	(WRONG ANSWER CHECK)
 			return 16;
-		if(num1Correct != true && num2Correct == true && aNumCorrect != true)	//Num2 correct.
+		if(blNum1Correct != true && blNum2Correct == true && blANumCorrect != true)	//Num2 correct.
 			return 17;
-		if(num1Correct != true && num2Correct != true && aNumCorrect == true)	//aNum correct.
+		if(blNum1Correct != true && blNum2Correct != true && blANumCorrect == true)	//aNum correct.
 			return 18;
 		
-		if(num1Correct == true && num2Correct == true && aNumCorrect != true)	//Num1 and Num2 correct. (WRONG ANSWER CHECK)
+		if(blNum1Correct == true && blNum2Correct == true && blANumCorrect != true)	//Num1 and Num2 correct. (WRONG ANSWER CHECK)
 			return 19;
-		if(num1Correct != true && num2Correct == true && aNumCorrect == true)	//Num2 and aNum correct.
+		if(blNum1Correct != true && blNum2Correct == true && blANumCorrect == true)	//Num2 and aNum correct.
 			return 20;
-		if(num1Correct == true && num2Correct != true && aNumCorrect == true)	//Num1 and aNum correct.
+		if(blNum1Correct == true && blNum2Correct != true && blANumCorrect == true)	//Num1 and aNum correct.
 			return 21;
 
-		return 2;
+		return 2;	//Returns switch case 2 if something isn't working properly with this function.
 	}
 	
-	private static void inputCheckSwitch(int switchState) {
-		int switchNum = switchState;
+	private static void checkAnswer(int intInputResult) {	//Switch state that determines how to respond to the user's input.
+		int intSwitchState = intInputResult;
 		
-		switch(switchNum) {
+		switch(intSwitchState) {
 		case 1:	//All correct.
-			if(count < amountOfQuestions) {
-				count++;
+			if(intQuesCount < intQuesAmount - 1) {	//Loops until intQuesCount reaches the amount of questions for the game.
+				intQuesCount++;
 				reset();
 				break;
 			}
-			else {
-				gameFrame.dispose();
-				gameOver gameOverStart = new gameOver();
+			else {	//If the last question has been answered, the gameFrame will close and the gameOver screen will launch.
+				frmGame.dispose();
+				gameOver launchGameOver = new gameOver();	//Launch gameOver window.
 				break;
 			}
-		case 2:	//All fields empty. 
+		case 2:	//All fields are empty. 
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.white);
-			status.setText("No input detected");
+			lblStatus.setText("No input detected");
 			break;
-		case 3:	//Num1 only, correct.	(EMPTY INPUT CHECK)
+		case 3:	//Num1 only; correct.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.white);
 			break;
-		case 4:	//Num2 only, correct.
+		case 4:	//Num2 only; correct.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.white);
 			break;
-		case 5:	//aNum only, correct.
+		case 5:	//aNum only; correct.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.green);
 			break;
-		case 6:	//Num1 and Num2 correct.
+		case 6:	//Num1 and Num2; correct.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.white);
 			break;
-		case 7:	//Num2 and aNum correct.
+		case 7:	//Num2 and aNum; correct.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.green);
 			break;
-		case 8:	//Num1 and aNum correct.
+		case 8:	//Num1 and aNum; correct.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.green);
 			break;
-		case 9:	//All wrong
+		case 9:	//All are wrong.
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.red);
 			break;
-		case 10:	//Num1 and Num2 wrong.
+		case 10:	//Num1 and Num2; wrong.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.white);
 			break;
-		case 11:	//Num1 wrong.
+		case 11:	//Num1; wrong.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.white);
 			break;
-		case 12:	//Num2 and aNum wrong.
+		case 12:	//Num2 and aNum; wrong.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.red);
 			break;
-		case 13:	//Num2 wrong.
+		case 13:	//Num2; wrong.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.white);
 			break;
-		case 14:	//aNum wrong.
+		case 14:	//aNum; wrong.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.red);
 			break;
-		case 15:	//Num1 and aNum incorrect.
+		case 15:	//Num1 and aNum; incorrect.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.red);
 			break;
-		case 16:	//Num1 correct.	(WRONG ANSWER CHECK)
+		case 16:	//Num1; correct.
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.red);
 			break;
-		case 17:	//Num2 correct.
+		case 17:	//Num2; correct.
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.red);
 			break;
-		case 18:	//aNum correct.
+		case 18:	//aNum; correct.
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.green);
 			break;
-		case 19:	//Num1 and Num2 correct.
+		case 19:	//Num1 and Num2; correct.
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.red);
 			break;
-		case 20:	//Num2 and aNum correct.
+		case 20:	//Num2 and aNum; correct.
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.green);
 			break;
-		case 21:	//Num1 and aNum correct.
+		case 21:	//Num1 and aNum; correct.
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.green);
@@ -331,15 +314,15 @@ public class startGame implements ActionListener{
 		}
 	}
 	
-	private static void reset() {
-		newQuestion();
+	private static void reset() {	//Clear the question and the user's answers, then display a new question.
+		newQuestion();	//Generate a new question.
 		
-		currentEquation.setText(currEq);
+		lblCurrEq.setText(strCurrEq);	//Display the new question.
 		
 		btnDenominator.setEnabled(true);
 		
 		txtNum1.setText("");
-		txtNum1.setEditable(false);
+		txtNum1.setEditable(false);	//Text fields not editable to make btnDenominator the main focus.
 		txtNum1.setBackground(Color.lightGray);
 		
 		txtNum2.setText("");
@@ -362,50 +345,50 @@ public class startGame implements ActionListener{
 		txtAnswerDen.setEditable(false);
 		txtAnswerDen.setBackground(Color.lightGray);
 		
-		if(operator == 1) {
+		if(intOp == 1) {
 			lblOp.setText("+");
 		}
 		else {
 			lblOp.setText("-");
 		}
 		
-		status.setText("");
+		lblStatus.setText("");
 		
-		numSubmit.setVisible(false);
+		btnNumSubmit.setVisible(false);
 	}
 	
-	private static int findNumerator(int num1, int num2) {
-		if(operator == 1)
-			return num1 + num2;
+	private static int findNumerator(int intNum1, int intNum2) {
+		if(intOp == 1)
+			return intNum1 + intNum2;
 		else
-			return num1 - num2;
+			return intNum1 - intNum2;
 	}
 	
 	private static void checkLCD() {
-		lcd = findDenominator.findLCD(questionDen1, questionDen2);
+		intLCD = findDenominator.findLCD(intQuesDen1, intQuesDen2);
 		
-		if(questionDen1 == lcd && questionDen2 == lcd) {	//Both denominators are the same.
-			numerator1 = questionNum1;
-			numerator2 = questionNum2;
-			answerNum = findNumerator(numerator1, numerator2);
+		if(intQuesDen1 == intLCD && intQuesDen2 == intLCD) {	//Both denominators are the same.
+			intUserNum1 = intQuesNum1;
+			intUserNum2 = intQuesNum2;
+			intUserANum = findNumerator(intUserNum1, intUserNum2);
 		}
 		
-		if(questionDen1 == lcd && questionDen2 != lcd) {	//Den1 stays the same, den2 increases.
-			numerator1 = questionNum1;
-			numerator2 = questionNum2 * (lcd/questionDen2);
-			answerNum = findNumerator(numerator1, numerator2);
+		if(intQuesDen1 == intLCD && intQuesDen2 != intLCD) {	//Den1 stays the same, den2 increases.
+			intUserNum1 = intQuesNum1;
+			intUserNum2 = intQuesNum2 * (intLCD/intQuesDen2);
+			intUserANum = findNumerator(intUserNum1, intUserNum2);
 		}
 		
-		if(questionDen1 != lcd && questionDen2 == lcd) {	//Den2 stays the same, den1 increases.
-			numerator1 = questionNum1 * (lcd/questionDen1);
-			numerator2 = questionNum2;
-			answerNum = findNumerator(numerator1, numerator2);
+		if(intQuesDen1 != intLCD && intQuesDen2 == intLCD) {	//Den2 stays the same, den1 increases.
+			intUserNum1 = intQuesNum1 * (intLCD/intQuesDen1);
+			intUserNum2 = intQuesNum2;
+			intUserANum = findNumerator(intUserNum1, intUserNum2);
 		}
 		
-		if(questionDen1 != lcd && questionDen2 != lcd) {	//Both increase.
-			numerator1 = questionNum1 * (lcd/questionDen1);
-			numerator2 = questionNum2 * (lcd/questionDen2);
-			answerNum = findNumerator(numerator1, numerator2);
+		if(intQuesDen1 != intLCD && intQuesDen2 != intLCD) {	//Both increase.
+			intUserNum1 = intQuesNum1 * (intLCD/intQuesDen1);
+			intUserNum2 = intQuesNum2 * (intLCD/intQuesDen2);
+			intUserANum = findNumerator(intUserNum1, intUserNum2);
 		}
 		
 	}
@@ -413,13 +396,13 @@ public class startGame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnDenominator) {
 			btnDenominator.setEnabled(false);
-			findDenominator findDen = new findDenominator(questionDen1, questionDen2);
+			findDenominator launchFindDen = new findDenominator(intQuesDen1, intQuesDen2);
 		}
 		
-		if(e.getSource() == numSubmit) {
+		if(e.getSource() == btnNumSubmit) {
 			checkLCD();
-			status.setText("");
-			inputCheckSwitch(inputCheck());
+			btnNumSubmit.setText("");
+			checkAnswer(inputCheck());
 		}
 		
 	}
