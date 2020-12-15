@@ -51,31 +51,30 @@ public class login implements ActionListener{
 		statusLabel.setBounds(110, 80, 200, 25);
 		loginPanel.add(statusLabel);
 		
+		
+		loginFrame.getRootPane().setDefaultButton(loginButton);
+		
 		loginFrame.setVisible(true);
 	}
 	
 	private static int inputCheck() {
-		if(username.equals("Test") && password.equals("testPass123")) {	//Login successful.
+		String userTest = "Test";
+		String userPass = "test";
+		
+		if(username.equals(userTest) && password.equals(userPass))	//Login successful.
 			return 1;
-		}
-		else if(username.equals("Test") != true && username.equals("") != true) {	//Wrong username.
+		if(username.equals(userTest) != true && username.equals("") != true) 	//Wrong username.
 			return 2;
-		}
-		else if(username.equals("Test") && password.equals("testPass123") != true) {	//Username accepted, wrong password.
+		if(username.equals(userTest) && password.equals(userPass) != true) 	//Username accepted, wrong password.
 			return 3;
-		}
-		else if(username.equals("Test") && password.equals("")) {	//Username accepted, empty password.
+		if(username.equals(userTest) && password.equals("")) 	//Username accepted, empty password.
 			return 4;
-		}
-		else if(username.equals("") && password.equals("")) { //Both empty.
+		if(username.equals("") && password.equals(""))  //Both empty.
 			return 4;
-		}
-		else if(username.equals("Test") != true && password.equals("testPass123") != true) {	//Both invalid.
+		if(username.equals(userTest) != true && password.equals(userPass) != true) 	//Both invalid.
 			return 5;
-		}
-		else {
-			return 5;
-		}
+
+		return 5;
 	}
 	
 	public void actionPerformed(ActionEvent e) {

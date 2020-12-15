@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 public class findDenominator implements ActionListener{
 	
@@ -54,25 +55,38 @@ public class findDenominator implements ActionListener{
 		LCDDen2.setEditable(false);
 		LCDDen2.setBounds(260, 100, 50, 25);
 		denPanel.add(LCDDen2);
-		
+
 		userAnswer = new JTextField();
 		userAnswer.setBounds(198, 155, 75, 20);
 		denPanel.add(userAnswer);
 
+		SwingUtilities.invokeLater(new Runnable() { 
+			public void run() { 
+				userAnswer.requestFocus(); 
+			} 
+        }); 
+		
 		submit = new JButton("Submit");
 		submit.setBounds(198, 180, 75, 25);
 		submit.addActionListener(this);
 		denPanel.add(submit);
 		
 		status = new JLabel("");
-		status.setBounds(185, 200, 200, 25);
+		status.setBounds(190, 205, 200, 25);
+		status.setForeground(Color.white);
 		denPanel.add(status);
+		
+		denFrame.getRootPane().setDefaultButton(submit);
 		
 		denFrame.add(denPanel);
 		denFrame.setVisible(true);
 	}
 	
-	public int findLCD(int den1, int den2) {
+	public void run() {
+        userAnswer.requestFocus();
+     }
+	
+	public static int findLCD(int den1, int den2) {
 		int larger = Math.max(den1, den2);
 		int smaller = Math.min(den1, den2);
 		int lcd = larger;
@@ -84,32 +98,36 @@ public class findDenominator implements ActionListener{
 		return lcd;
 	}
 	
+	private static void close(int lcd) {
+		startGame.txtDen1.setText(String.valueOf(lcd));
+		startGame.txtDen1.setBackground(Color.green);
+		
+		startGame.txtDen2.setText(String.valueOf(lcd));
+		startGame.txtDen2.setBackground(Color.green);
+		
+		startGame.txtAnswerDen.setText(String.valueOf(lcd));
+		startGame.txtAnswerDen.setBackground(Color.green);
+		
+		startGame.txtNum1.setBackground(Color.white);
+		startGame.txtNum1.setEditable(true);
+		
+		startGame.txtNum2.setBackground(Color.white);
+		startGame.txtNum2.setEditable(true);
+		
+		startGame.txtAnswerNum.setBackground(Color.white);
+		startGame.txtAnswerNum.setEditable(true);
+		
+		startGame.numSubmit.setVisible(true);
+		startGame.status.setVisible(true);
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == submit) {
 			int lcd = findLCD(intDen1, intDen2);
 
 			if(userAnswer.getText().equals(String.valueOf(lcd))) {
 				denFrame.dispose();
-				startGame.txtDen1.setText(String.valueOf(lcd));
-				startGame.txtDen1.setBackground(Color.green);
-				
-				startGame.txtDen2.setText(String.valueOf(lcd));
-				startGame.txtDen2.setBackground(Color.green);
-				
-				startGame.txtAnswerDen.setText(String.valueOf(lcd));
-				startGame.txtAnswerDen.setBackground(Color.green);
-				
-				startGame.txtNum1.setBackground(Color.white);
-				startGame.txtNum1.setEditable(true);
-				
-				startGame.txtNum2.setBackground(Color.white);
-				startGame.txtNum2.setEditable(true);
-				
-				startGame.txtAnswerNum.setBackground(Color.white);
-				startGame.txtAnswerNum.setEditable(true);
-				
-				startGame.numSubmit.setVisible(true);
-				startGame.status.setVisible(true);
+				close(lcd);
 			}
 			else if(userAnswer.getText().equals("")) {
 				status.setText("No input detected.");
