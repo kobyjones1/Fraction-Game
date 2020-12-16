@@ -11,17 +11,20 @@ import javax.swing.JTextField;
 
 public class startGame implements ActionListener{
 	
+	public static int intScore; //Correct answer: 3 = +75 (60 + 15 bonus points), 2 = +40, 1 = +20; Incorrect Answer: 3 = -50, 2 = -30, 1 = -15.
+
 	private static JFrame frmGame;
-	public static JButton btnDenominator, btnNumSubmit;
+	public static JButton btnDenominator, btnSubmit;
 	public static JTextField txtNum1, txtNum2, txtDen1, txtDen2, txtAnswerNum, txtAnswerDen;
-	public static JLabel lblCurrEq,lblOp, lblStatus;
+	public static JLabel lblCurrEq,lblOp, lblStatus, lblScore;
 	private static String strCurrEq, strCurrOp;
-	private static int intQuesNum1, intQuesDen1, intQuesNum2, intQuesDen2, intLCD; 
+	private static int intQuesNum1, intQuesDen1, intQuesNum2, intQuesDen2, intLCD, intScoreRepeat = 0; 
 	private static int intUserNum1, intUserNum2, intUserANum, intOp, intQuesCount, intQuesAmount;
 	
 	public startGame() {
 		intQuesAmount = 1;	//Sets the amount of iterations for the program.
 		intQuesCount = 0;	//	Responsible for maintaining the amountOfQuestions iterations.
+		intScore = 100;	//Initialize the score variable.
 		
 		frmGame = new JFrame("Fraction Game");	//Launches the startGame window.
 		frmGame.setSize(400, 300);
@@ -32,6 +35,12 @@ public class startGame implements ActionListener{
 		pnlMain.setLayout(null);
 		frmGame.add(pnlMain);
 		pnlMain.setBackground(Color.blue);
+		
+		lblScore = new JLabel(String.valueOf(intScore));	//Tells the user if they didn't enter any data.
+		lblScore.setFont(new Font("Arial", Font.BOLD, 20));
+		lblScore.setForeground(Color.white);
+		lblScore.setBounds(10, 10, 150, 25);
+		pnlMain.add(lblScore);
 		
 		lblCurrEq = new JLabel();	//Displays the current equation.
 		lblCurrEq.setFont(new Font("Serif", Font.BOLD, 30));
@@ -86,18 +95,29 @@ public class startGame implements ActionListener{
 		lblStatus.setBounds(30, 233, 400, 25);
 		pnlMain.add(lblStatus);
 		
-		btnNumSubmit = new JButton("Submit");	//Button responsible for checking if the user's answers are correct.
-		btnNumSubmit.addActionListener(this);
-		btnNumSubmit.setBounds(270, 233, 80, 25);
-		btnNumSubmit.setVisible(false);
-		pnlMain.add(btnNumSubmit);		
+		btnSubmit = new JButton("Submit");	//Button responsible for checking if the user's answers are correct.
+		btnSubmit.addActionListener(this);
+		btnSubmit.setBounds(270, 233, 80, 25);
+		btnSubmit.setVisible(false);
+		pnlMain.add(btnSubmit);		
 		
 		reset();	//Clear old data, then generate a new question.
 		
-		frmGame.getRootPane().setDefaultButton(btnNumSubmit);	//Allows the user to activate the "btnNumSubmit" button with the ENTER key.
+		frmGame.getRootPane().setDefaultButton(btnSubmit);	//Allows the user to activate the "btnSubmit" button with the ENTER key.
 		
 		frmGame.setContentPane(pnlMain);
 		frmGame.setVisible(true);
+	}
+	
+	public static void addScore(int intIncrementVal) {
+		intScore += intIncrementVal;
+	}
+	
+	public static void subScore(int intIncrementVal) {
+		int intSubScore = intScore - intIncrementVal;
+		
+		if(intSubScore >= 0)
+			intScore -= intIncrementVal;
 	}
 	
 	private static int randGen(int intLimit) {	//Generate the numbers for the problem.
@@ -121,30 +141,30 @@ public class startGame implements ActionListener{
 	}
 	
 	private static int inputCheck() {	//Checks if the user's input is correct, incorrect, or non existent.
-		String gameNum1 = String.valueOf(intUserNum1);	//Convert the game's correct answer to a string to compare with the user's answer.
-		String gameNum2 = String.valueOf(intUserNum2);
-		String gameANum = String.valueOf(intUserANum);
+		String strGameNum1 = String.valueOf(intUserNum1);	//Convert the game's correct answer to a string to compare with the user's answer.
+		String strGameNum2 = String.valueOf(intUserNum2);
+		String strGameANum = String.valueOf(intUserANum);
 		
 		String strNum1 = txtNum1.getText();	//Convert the user's answer to a string.
 		String strNum2 = txtNum2.getText();
 		String strANum = txtAnswerNum.getText();
 		
-		boolean blNum1Correct = false;
+		boolean blNum1Correct = false;	//Finds out if any text fields are empty and if they contain the correct answer.
 		boolean blNum2Correct = false;
 		boolean blANumCorrect = false;
 		boolean blEmptyNum1 = false;
 		boolean blEmptyNum2 = false;
 		boolean blEmptyANum = false;
 		
-		if(strNum1.equals(gameNum1))	//Finds out if any text fields are empty and if they contain the correct answer.
+		if(strNum1.equals(strGameNum1))	
 			blNum1Correct = true;
 		if(strNum1.equals(""))
 			blEmptyNum1 = true;	
-		if(strNum2.equals(gameNum2))
+		if(strNum2.equals(strGameNum2))
 			blNum2Correct = true;		
 		if(strNum2.equals(""))
 			blEmptyNum2 = true;		
-		if(strANum.equals(gameANum))
+		if(strANum.equals(strGameANum))
 			blANumCorrect = true;		
 		if(strANum.equals(""))
 			blEmptyANum = true;
@@ -178,6 +198,9 @@ public class startGame implements ActionListener{
 		if(blNum2Correct != true && blEmptyNum1 == true && blANumCorrect != true)	//Num2, aNum incorrect.
 			return 12;
 		
+		if(blNum1Correct != true && blNum2Correct != true && blANumCorrect != true)	//All wrong.
+			return 9;
+		
 		if(blNum1Correct == true && blNum2Correct != true && blANumCorrect != true)	//Num1 correct.	(WRONG ANSWER CHECK)
 			return 16;
 		if(blNum1Correct != true && blNum2Correct == true && blANumCorrect != true)	//Num2 correct.
@@ -195,11 +218,20 @@ public class startGame implements ActionListener{
 		return 2;	//Returns switch case 2 if something isn't working properly with this function.
 	}
 	
-	private static void checkAnswer(int intInputResult) {	//Switch state that determines how to respond to the user's input.
-		int intSwitchState = intInputResult;
+	private static void checkAnswerSwitch(int intSwitchState) {
+		int intCorrect3 = 75, intCorrect2 = 40, intCorrect1 = 20, intIncorrect3 = 50, intIncorrect2 = 30, intIncorrect1 = 15;
 		
-		switch(intSwitchState) {
-		case 1:	//All correct.
+		boolean blScoreRepeat = false;
+		
+		if(intScoreRepeat == intSwitchState)	//Prevents the player from spamming the submit button.
+			blScoreRepeat = true;
+		else
+			intScoreRepeat = intSwitchState;
+		
+		switch(intSwitchState) {	//Alters the data on the game window and increments the score based on the user's input.
+		case 1:	//All correct.	
+			addScore(intCorrect3); //Increase the score by 75.
+
 			if(intQuesCount < intQuesAmount - 1) {	//Loops until intQuesCount reaches the amount of questions for the game.
 				intQuesCount++;
 				reset();
@@ -207,7 +239,7 @@ public class startGame implements ActionListener{
 			}
 			else {	//If the last question has been answered, the gameFrame will close and the gameOver screen will launch.
 				frmGame.dispose();
-				gameOver launchGameOver = new gameOver();	//Launch gameOver window.
+				gameOver launchGameOver = new gameOver();	//Launch the gameOver window.
 				break;
 			}
 		case 2:	//All fields are empty. 
@@ -220,98 +252,163 @@ public class startGame implements ActionListener{
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.white);
+			
+			if(blScoreRepeat == false)
+				addScore(intCorrect1);
 			break;
 		case 4:	//Num2 only; correct.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.white);
+			
+			if(blScoreRepeat == false)
+				addScore(intCorrect1);
 			break;
 		case 5:	//aNum only; correct.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.green);
+		
+			if(blScoreRepeat == false)
+				addScore(intCorrect1);
 			break;
 		case 6:	//Num1 and Num2; correct.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.white);
+			
+			if(blScoreRepeat == false) 
+					addScore(intCorrect2);
 			break;
 		case 7:	//Num2 and aNum; correct.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.green);
+
+			if(blScoreRepeat == false)
+				addScore(intCorrect2);
 			break;
 		case 8:	//Num1 and aNum; correct.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.green);
+
+			if(blScoreRepeat == false) 
+				addScore(intCorrect2);
 			break;
 		case 9:	//All are wrong.
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.red);
+			
+			if(blScoreRepeat == false) 
+				subScore(intIncorrect3);
 			break;
 		case 10:	//Num1 and Num2; wrong.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.white);
+
+			if(blScoreRepeat == false)
+				subScore(intIncorrect2);
 			break;
 		case 11:	//Num1; wrong.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.white);
+			
+			if(blScoreRepeat == false)
+				subScore(intIncorrect1);
 			break;
 		case 12:	//Num2 and aNum; wrong.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.red);
+			
+			if(blScoreRepeat == false) 
+				subScore(intIncorrect2);
 			break;
 		case 13:	//Num2; wrong.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.white);
+			
+			if(blScoreRepeat == false)
+				subScore(intIncorrect1);
 			break;
 		case 14:	//aNum; wrong.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.white);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.red);
+			
+			if(blScoreRepeat == false)
+				subScore(intIncorrect1);
 			break;
 		case 15:	//Num1 and aNum; incorrect.	(EMPTY INPUT CHECK)
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.white);
 			txtAnswerNum.setBackground(Color.red);
+
+			if(blScoreRepeat == false) 
+				subScore(intIncorrect2);
 			break;
 		case 16:	//Num1; correct.
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.red);
+
+			if(blScoreRepeat == false)
+				subScore(intIncorrect2 - intCorrect1);
 			break;
 		case 17:	//Num2; correct.
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.red);
+
+			if(blScoreRepeat == false) 
+				subScore(intIncorrect2 - intCorrect1);
 			break;
 		case 18:	//aNum; correct.
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.green);
+
+			if(blScoreRepeat == false) 
+				subScore(intIncorrect2 - intCorrect1);
 			break;
 		case 19:	//Num1 and Num2; correct.
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.red);
+
+			if(blScoreRepeat == false) 
+				addScore(intCorrect2 - intIncorrect1);
 			break;
 		case 20:	//Num2 and aNum; correct.
 			txtNum1.setBackground(Color.red);
 			txtNum2.setBackground(Color.green);
 			txtAnswerNum.setBackground(Color.green);
+
+			if(blScoreRepeat == false) 
+				addScore(intCorrect2 - intIncorrect1);
 			break;
 		case 21:	//Num1 and aNum; correct.
 			txtNum1.setBackground(Color.green);
 			txtNum2.setBackground(Color.red);
 			txtAnswerNum.setBackground(Color.green);
+			
+			if(blScoreRepeat == false) 
+				addScore(intCorrect2 - intIncorrect1);
 			break;
 		}
+	}
+	
+	private static void checkAnswer(int intInputResult) {	//Switch state that determines how to respond to the user's input.
+		lblScore.setText(String.valueOf(intScore));
+		lblStatus.setText("");
+		btnSubmit.setText("Submit");
+		
+		checkAnswerSwitch(inputCheck());
 	}
 	
 	private static void reset() {	//Clear the question and the user's answers, then display a new question.
@@ -320,6 +417,8 @@ public class startGame implements ActionListener{
 		lblCurrEq.setText(strCurrEq);	//Display the new question.
 		
 		btnDenominator.setEnabled(true);
+		
+		lblScore.setText(String.valueOf(intScore));	//Display the score.
 		
 		txtNum1.setText("");
 		txtNum1.setEditable(false);	//Text fields not editable to make btnDenominator the main focus.
@@ -354,8 +453,9 @@ public class startGame implements ActionListener{
 		
 		lblStatus.setText("");
 		
-		btnNumSubmit.setVisible(false);
+		btnSubmit.setVisible(false);
 	}
+	
 	
 	private static int findNumerator(int intNum1, int intNum2) {
 		if(intOp == 1)
@@ -396,13 +496,13 @@ public class startGame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnDenominator) {
 			btnDenominator.setEnabled(false);
-			findDenominator launchFindDen = new findDenominator(intQuesDen1, intQuesDen2);
+			findDenominator launchFindDen = new findDenominator(intQuesDen1, intQuesDen2);	//Launches the findDenominator window.
 		}
 		
-		if(e.getSource() == btnNumSubmit) {
+		if(e.getSource() == btnSubmit) {	//Checks if the user's input is correct.
 			checkLCD();
-			btnNumSubmit.setText("");
 			checkAnswer(inputCheck());
+			lblScore.setText(String.valueOf(intScore));
 		}
 		
 	}

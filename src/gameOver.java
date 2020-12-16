@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 
 public class gameOver implements ActionListener {
 	
+	public static String strScore;
+	
 	private static JFrame frmGameOver;
 	private static JButton btnStartOver, btnLogout, btnClose;
 	
@@ -24,10 +26,18 @@ public class gameOver implements ActionListener {
 		frmGameOver.add(pnlGameOver);
 		
 		JLabel lblGameOver = new JLabel("Game Over!");	//Displays the "Game Over!" text on the screen.
-		lblGameOver.setBounds(100, 80, 200, 25);
+		lblGameOver.setBounds(100, 60, 200, 25);
 		lblGameOver.setFont(new Font("Arial", Font.BOLD, 30));
 		lblGameOver.setForeground(Color.green);
 		pnlGameOver.add(lblGameOver);
+		
+		strScore = "Final Score: " + startGame.intScore;
+		
+		JLabel lblScore = new JLabel(strScore);	//Displays the score.
+		lblScore.setBounds(90, 90, 350, 40);
+		lblScore.setFont(new Font("Arial", Font.BOLD, 25));
+		lblScore.setForeground(Color.green);
+		pnlGameOver.add(lblScore);
 		
 		btnStartOver = new JButton("Start Over");	//Starts the game over.
 		btnStartOver.setBounds(30, 150, 95, 25);
@@ -63,4 +73,5 @@ public class gameOver implements ActionListener {
 			frmGameOver.dispose();
 		}
 	}
+	
 }

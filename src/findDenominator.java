@@ -10,6 +10,8 @@ import javax.swing.SwingUtilities;
 
 public class findDenominator implements ActionListener{
 	
+	private String strScoreRepeat = null;
+	
 	private JFrame frmFindDen;
 	private JButton btnSubmit;
 	private JTextField txtUserAnswer;
@@ -110,14 +112,24 @@ public class findDenominator implements ActionListener{
 		startGame.txtAnswerNum.setBackground(Color.white);
 		startGame.txtAnswerNum.setEditable(true);
 		
-		startGame.btnNumSubmit.setVisible(true);	//Displays the submit button.
+		startGame.lblScore.setText(String.valueOf(startGame.intScore));	//Send the score to the game window.
+		
+		startGame.btnSubmit.setVisible(true);	//Displays the submit button.
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnSubmit) {
-			int intLCD = findLCD(intDen1, intDen2);
+			int intLCD = findLCD(intDen1, intDen2);	//Calculate the LCD to check the user's answer.
+			String strLCD = String.valueOf(intLCD);
 
-			if(txtUserAnswer.getText().equals(String.valueOf(intLCD))) {	//Closes findDenominator if the user's answer is correct.
+			boolean blScoreRepeat = false;
+			
+			if(txtUserAnswer.getText().equals(strScoreRepeat))	//Prevents the player from spamming the submit button.
+				blScoreRepeat = true;
+
+			if(txtUserAnswer.getText().equals(strLCD)) {	//Closes findDenominator if the user's answer is correct.
+				startGame.addScore(65);	//Gain 60 (+5 bonus points).
+				
 				frmFindDen.dispose();
 				close(intLCD);
 			}
@@ -125,9 +137,15 @@ public class findDenominator implements ActionListener{
 				lblStatus.setText("No input detected.");
 			}
 			else {
+				if(blScoreRepeat == false) {
+					startGame.subScore(25);	//Lose 15 (+10 bonus points).
+					strScoreRepeat = txtUserAnswer.getText();
+				}
+				
 				txtUserAnswer.setBackground(Color.red);
-				lblStatus.setText(txtUserAnswer.getText() + " is incorrect.");	//Tells the user if their answer is incorrect.
+				lblStatus.setText(txtUserAnswer.getText() + " is incorrect.");	//Tells the user that their answer is incorrect.
 			}
 		}
 	}
+	
 }
