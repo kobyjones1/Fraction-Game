@@ -2,7 +2,9 @@
 
 **Revision of Capstone project.**
 
-**Project Name: Fraction Challenge**
+**Project Name:** Fraction Challenge
+
+**Guidelines:**
 
 1. Create a fun, interactive game that adds and subtracts fractions.
 2. Random equations will be generated for players to solve 
