@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 
 public class startGame implements ActionListener{
 	
-	public static int intScore; //Correct answer: 3 = +75 (60 + 15 bonus points), 2 = +40, 1 = +20; Incorrect Answer: 3 = -50, 2 = -30, 1 = -15.
+	public static int intScore = 100; //Correct answer: 3 = +75 (60 + 15 bonus points), 2 = +40, 1 = +20; Incorrect Answer: 3 = -50, 2 = -30, 1 = -15.
 
 	private static JFrame frmGame;
 	public static JButton btnDenominator, btnSubmit;
@@ -24,7 +24,6 @@ public class startGame implements ActionListener{
 	public startGame() {
 		intQuesAmount = 1;	//Sets the amount of iterations for the program.
 		intQuesCount = 0;	//	Responsible for maintaining the amountOfQuestions iterations.
-		intScore = 100;	//Initialize the score variable.
 		
 		frmGame = new JFrame("Fraction Game");	//Launches the startGame window.
 		frmGame.setSize(400, 300);

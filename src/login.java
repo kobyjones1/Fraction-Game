@@ -1,5 +1,12 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,11 +17,12 @@ import javax.swing.JTextField;
 public class login implements ActionListener{
 	
 	JFrame frmLogin;
+	public static Connection connDB;
 	private JLabel lblUser, lblPassword, lblStatus;
 	private JTextField txtUser;
 	private JPasswordField txtPassword;
 	private JButton btnLogin;
-	private static String strUsername, strPassword;
+	public static String strUsername, strPassword, playerDB, dbURL;
 	
 	public login() {
 		frmLogin = new JFrame("Fraction Game");	//Launches the login window.
@@ -57,51 +65,62 @@ public class login implements ActionListener{
 		frmLogin.setVisible(true);
 	}
 	
-	private static int inputCheck() {	//Checks to make sure the user's input is valid.
-		String strUser = "Test";
-		String strPass = "test";
+	private static void inputCheck() {	//Checks to make sure the user's input is valid.
 		
-		if(strUsername.equals(strUser) && strPassword.equals(strPass))	//Login successful.
-			return 1;
-		if(strUsername.equals(strUser) != true && strUsername.equals("") != true) 	//Wrong username.
-			return 2;
-		if(strUsername.equals(strUser) && strPassword.equals(strPass) != true) 	//Username accepted, wrong password.
-			return 3;
-		if(strUsername.equals(strUser) && strPassword.equals("")) 	//Username accepted, empty password.
-			return 4;
-		if(strUsername.equals("") && strPassword.equals(""))  //Both empty.
-			return 4;
-		if(strUsername.equals(strUser) != true && strPassword.equals(strPass) != true) 	//Both invalid.
-			return 5;
-
-		return 5;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnLogin) {	//Sets the logic for the "btnLogin"
 			strUsername = txtUser.getText();
-			strPassword = txtPassword.getText();
+			strPassword = String.valueOf(txtPassword.getPassword());
 			
-			int switchState = inputCheck();	//Check to make sure the user's username and password are valid.
+			PreparedStatement state = null;
+			ResultSet result = null;
+
+			try {
+				Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+			}
+			catch(ClassNotFoundException e1){
+				e1.printStackTrace();
+			}
 			
-			switch(switchState) {
-			case 1: 
-				frmLogin.dispose();
-				startGame launchStartGame = new startGame();	//Start the game.
-				break;
-			case 2: 
-				lblStatus.setText("Username invalid.");
-				break;
-			case 3: 
-				lblStatus.setText("Password invalid.");
-				break;
-			case 4: 
-				lblStatus.setText("Both fields require input.");
-				break;
-			case 5: 
-				lblStatus.setText("Invalid username and password.");
-				break;
-			}	
+			try {
+				playerDB = "A:/Software/Java Projects/Fraction Game/playerInfo.accdb";
+				dbURL = "jdbc:ucanaccess://" + playerDB;
+				connDB = DriverManager.getConnection(dbURL);
+				
+				state = connDB.prepareStatement("SELECT Username, Password FROM Players WHERE Username = ? AND Password = ?");
+				
+				state.setString(1, strUsername);
+				state.setString(2, strPassword);
+				
+				result = state.executeQuery();
+				
+				//System.out.println(strUsername);
+				//System.out.println(strPassword);
+				
+				if(result.next()) {
+					frmLogin.dispose(); 
+					startGame launchStartGame = new startGame();
+				}
+				else {
+					lblStatus.setText("Invalid input.");
+				}
+			}
+			catch(SQLException e2) {
+				e2.printStackTrace();
+			}
+			
+			//int switchState = inputCheck();	//Check to make sure the user's username and password are valid.
+			//inputCheck();
+			/*
+			 * switch(switchState) { case 1: frmLogin.dispose(); startGame launchStartGame =
+			 * new startGame(); //Start the game. break; case 2:
+			 * lblStatus.setText("Username invalid."); break; case 3:
+			 * lblStatus.setText("Password invalid."); break; case 4:
+			 * lblStatus.setText("Both fields require input."); break; case 5:
+			 * lblStatus.setText("Invalid username and password."); break; }
+			 */
 		}
 	}
 	
