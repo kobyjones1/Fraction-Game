@@ -17,13 +17,14 @@ public class startGame implements ActionListener{
 	public static JButton btnDenominator, btnSubmit, btnMusic;
 	public static JTextField txtUserNum1, txtUserNum2, txtUserDen1, txtUserDen2, txtUserAnswerNum, txtUserAnswerDen;
 	public static JLabel lblCurrEq,lblOp, lblStatus, lblScore, lblCurrQuesNum;
+	
 	private static String strCurrEq, strCurrOp;
 	private static int intQuesNum1, intQuesDen1, intQuesNum2, intQuesDen2, intOp, intQuesCount, intQuesAmount; 
 	private static int intNum1, intNum2, intANum, intLCD, intScoreRepeat = 0;
 	
 	public startGame() {
 		intQuesAmount = login.intQuesAmount;	//Sets the amount of iterations for the program.
-		intQuesCount = 0;	//	Responsible for maintaining the amountOfQuestions iterations.
+		intQuesCount = 0;	//	Responsible for maintaining the question iterations.
 		
 		frmGame = new JFrame("Fraction Game");	//Launches the startGame window.
 		frmGame.setSize(400, 300);
@@ -35,13 +36,13 @@ public class startGame implements ActionListener{
 		frmGame.add(pnlMain);
 		pnlMain.setBackground(Color.blue);
 		
-		lblScore = new JLabel(String.valueOf(intScore));	//Tells the user if they didn't enter any data.
+		lblScore = new JLabel(String.valueOf(intScore));	//Displays the current score.
 		lblScore.setFont(new Font("Arial", Font.BOLD, 20));
 		lblScore.setForeground(Color.white);
 		lblScore.setBounds(10, 10, 150, 25);
 		pnlMain.add(lblScore);
 		
-		lblCurrQuesNum = new JLabel(String.valueOf(intQuesCount + 1) + ":");	//Displays the current equation.
+		lblCurrQuesNum = new JLabel(String.valueOf(intQuesCount + 1) + ":");	//Displays the current question number.
 		lblCurrQuesNum.setFont(new Font("Serif", Font.BOLD, 30));
 		lblCurrQuesNum.setForeground(Color.white);
 		lblCurrQuesNum.setBounds(60, 35, 300, 25);
@@ -94,7 +95,7 @@ public class startGame implements ActionListener{
 		txtUserAnswerDen.setBounds(270, 200, 80, 25);
 		pnlMain.add(txtUserAnswerDen);
 		
-		lblStatus = new JLabel();	//Tells the user if they didn't enter any data.
+		lblStatus = new JLabel();	//Tells the user if no input was detected.
 		lblStatus.setFont(new Font("Serif", Font.BOLD, 15));
 		lblStatus.setForeground(Color.white);
 		lblStatus.setBounds(30, 233, 400, 25);
@@ -106,7 +107,7 @@ public class startGame implements ActionListener{
 		btnSubmit.setVisible(false);
 		pnlMain.add(btnSubmit);		
 		
-		btnMusic = new JButton("Music");	//Control the music.
+		btnMusic = new JButton("Music");	//Controls the music.
 		btnMusic.setBounds(305, 10, 70, 25);
 		btnMusic.addActionListener(this);
 		pnlMain.add(btnMusic);
@@ -132,7 +133,7 @@ public class startGame implements ActionListener{
 	
 	private static int randGen(int intLimit) {	//Generate the numbers for the problem.
 		Random randomNum = new Random();
-		return randomNum.nextInt(intLimit) + 1;	//+1 to avoid getting 0;
+		return randomNum.nextInt(intLimit) + 1;	//Adds 1 to the result to avoid obtaining 0;
 	}
 
 	private static void newQuestion() {	//Generates the problem for the user to solve.
@@ -143,7 +144,7 @@ public class startGame implements ActionListener{
 		
 		intOp = randGen(2);	//Randomly determine whether the user will add or subtract the fractions.
 
-		if(intOp == 1)	
+		if(intOp == 1)	//Logic for switching the operator.
 			strCurrOp = "+";
 		else
 			strCurrOp = "-";
@@ -156,7 +157,7 @@ public class startGame implements ActionListener{
 		String strGameNum2 = String.valueOf(intNum2);
 		String strGameANum = String.valueOf(intANum);
 		
-		String strNum1 = txtUserNum1.getText();	//Convert the user's answer to a string.
+		String strNum1 = txtUserNum1.getText();	//Converts the user's answers to strings.
 		String strNum2 = txtUserNum2.getText();
 		String strANum = txtUserAnswerNum.getText();
 		
@@ -171,13 +172,13 @@ public class startGame implements ActionListener{
 			blNum1Correct = true;
 		if(strNum1.equals(""))	//Checks if the user left the text field empty.
 			blEmptyNum1 = true;	
-		if(strNum2.equals(strGameNum2))
+		if(strNum2.equals(strGameNum2))	//Checks if the answer is correct.
 			blNum2Correct = true;		
-		if(strNum2.equals(""))
+		if(strNum2.equals(""))	//Checks if the user left the text field empty.
 			blEmptyNum2 = true;		
-		if(strANum.equals(strGameANum))
+		if(strANum.equals(strGameANum))	//Checks if the answer is correct.
 			blANumCorrect = true;		
-		if(strANum.equals(""))
+		if(strANum.equals(""))	//Checks if the user left the text field empty.
 			blEmptyANum = true;
 		
 		if(blNum1Correct == true && blNum2Correct == true && blANumCorrect == true)	//All correct.
@@ -226,7 +227,7 @@ public class startGame implements ActionListener{
 		if(blNum1Correct == true && blNum2Correct != true && blANumCorrect == true)	//Num1 and aNum correct. (WRONG ANSWER CHECK)
 			return 21;
 
-		return 2;	//Returns switch case 2 if something isn't working properly with this function.
+		return 2;	//Assumes input can't be detected.
 	}
 	
 	private static void checkAnswerSwitch(int intSwitchState) {	//Switch state that determines how to respond to the user's input.
@@ -266,7 +267,7 @@ public class startGame implements ActionListener{
 			txtUserNum2.setBackground(Color.white);
 			txtUserAnswerNum.setBackground(Color.white);
 			
-			txtUserNum1.setEditable(false);
+			txtUserNum1.setEditable(false);	//Text field is unavailable once the player gets the answer correct.
 			
 			if(blScoreRepeat == false)
 				addScore(intCorrect1);
@@ -444,16 +445,16 @@ public class startGame implements ActionListener{
 		}
 	}
 	
-	private static void reset() {	//Clear the question and the user's answers, then display a new question.
+	private static void reset() {	//Clears the question and the user's answers, then displays a new question.
 		newQuestion();	//Generate a new question.
 		
 		lblCurrEq.setText(strCurrEq);	//Display the new question.
 		
 		btnDenominator.setEnabled(true);	//Makes btnDenominator available for the new question.
 		
-		lblScore.setText(String.valueOf(intScore));	//Display the score.
+		lblScore.setText(String.valueOf(intScore));	//Update the score.
 		
-		lblCurrQuesNum.setText(String.valueOf(intQuesCount + 1) + ":");
+		lblCurrQuesNum.setText(String.valueOf(intQuesCount + 1) + ":");	//Update the question number.
 		
 		txtUserNum1.setText("");
 		txtUserNum1.setEditable(false);	//Text fields not editable to make btnDenominator the main focus.
@@ -492,7 +493,7 @@ public class startGame implements ActionListener{
 	}
 	
 	private static int findNumerator(int intNum1, int intNum2) {	//Finds the numerator based on the current operator.
-		if(intOp == 1)
+		if(intOp == 1)	//Switches based on the current operator.
 			return intNum1 + intNum2;
 		else
 			return intNum1 - intNum2;
@@ -525,23 +526,22 @@ public class startGame implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btnDenominator) {
-			btnDenominator.setEnabled(false);	//Not enabled once the findDenominator window opens, reactivates if the game resets.
+		if(e.getSource() == btnDenominator) {	//Responsible for activated the findDenominator window
+			btnDenominator.setEnabled(false);	//Disabled once the findDenominator window opens, reactivates if the game resets.
 			findDenominator launchFindDen = new findDenominator(intQuesDen1, intQuesDen2);	//Launches the findDenominator window.
 		}
 		
-		if(e.getSource() == btnMusic) {
+		if(e.getSource() == btnMusic) {	//Pause or play the background music when clicked.
 			login.toggleMusic();
 		}
 		
 		if(e.getSource() == btnSubmit) {	//Checks if the user's input is correct.
 			lblStatus.setText("");	//Empty the status label.
 			
-			checkAnswerSwitch(inputCheck());
+			checkAnswerSwitch(inputCheck());	//Awards/deducts points based on the player's answer.
 			
 			lblScore.setText(String.valueOf(intScore));	//Updates the score.
 		}
-		
 	}
 
 }
