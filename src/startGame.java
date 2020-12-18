@@ -16,13 +16,13 @@ public class startGame implements ActionListener{
 	private static JFrame frmGame;
 	public static JButton btnDenominator, btnSubmit, btnMusic;
 	public static JTextField txtUserNum1, txtUserNum2, txtUserDen1, txtUserDen2, txtUserAnswerNum, txtUserAnswerDen;
-	public static JLabel lblCurrEq,lblOp, lblStatus, lblScore;
+	public static JLabel lblCurrEq,lblOp, lblStatus, lblScore, lblCurrQuesNum;
 	private static String strCurrEq, strCurrOp;
 	private static int intQuesNum1, intQuesDen1, intQuesNum2, intQuesDen2, intOp, intQuesCount, intQuesAmount; 
 	private static int intNum1, intNum2, intANum, intLCD, intScoreRepeat = 0;
 	
 	public startGame() {
-		intQuesAmount = 1;	//Sets the amount of iterations for the program.
+		intQuesAmount = login.intQuesAmount;	//Sets the amount of iterations for the program.
 		intQuesCount = 0;	//	Responsible for maintaining the amountOfQuestions iterations.
 		
 		frmGame = new JFrame("Fraction Game");	//Launches the startGame window.
@@ -40,6 +40,12 @@ public class startGame implements ActionListener{
 		lblScore.setForeground(Color.white);
 		lblScore.setBounds(10, 10, 150, 25);
 		pnlMain.add(lblScore);
+		
+		lblCurrQuesNum = new JLabel(String.valueOf(intQuesCount + 1) + ":");	//Displays the current equation.
+		lblCurrQuesNum.setFont(new Font("Serif", Font.BOLD, 30));
+		lblCurrQuesNum.setForeground(Color.white);
+		lblCurrQuesNum.setBounds(60, 35, 300, 25);
+		pnlMain.add(lblCurrQuesNum);
 		
 		lblCurrEq = new JLabel();	//Displays the current equation.
 		lblCurrEq.setFont(new Font("Serif", Font.BOLD, 30));
@@ -260,6 +266,8 @@ public class startGame implements ActionListener{
 			txtUserNum2.setBackground(Color.white);
 			txtUserAnswerNum.setBackground(Color.white);
 			
+			txtUserNum1.setEditable(false);
+			
 			if(blScoreRepeat == false)
 				addScore(intCorrect1);
 			break;
@@ -267,6 +275,8 @@ public class startGame implements ActionListener{
 			txtUserNum1.setBackground(Color.white);
 			txtUserNum2.setBackground(Color.green);
 			txtUserAnswerNum.setBackground(Color.white);
+			
+			txtUserNum2.setEditable(false);
 			
 			if(blScoreRepeat == false)
 				addScore(intCorrect1);
@@ -276,6 +286,8 @@ public class startGame implements ActionListener{
 			txtUserNum2.setBackground(Color.white);
 			txtUserAnswerNum.setBackground(Color.green);
 		
+			txtUserAnswerNum.setEditable(false);
+			
 			if(blScoreRepeat == false)
 				addScore(intCorrect1);
 			break;
@@ -283,6 +295,9 @@ public class startGame implements ActionListener{
 			txtUserNum1.setBackground(Color.green);
 			txtUserNum2.setBackground(Color.green);
 			txtUserAnswerNum.setBackground(Color.white);
+			
+			txtUserNum1.setEditable(false);
+			txtUserNum2.setEditable(false);
 			
 			if(blScoreRepeat == false) 
 					addScore(intCorrect2);
@@ -292,6 +307,9 @@ public class startGame implements ActionListener{
 			txtUserNum2.setBackground(Color.green);
 			txtUserAnswerNum.setBackground(Color.green);
 
+			txtUserNum2.setEditable(false);
+			txtUserAnswerNum.setEditable(false);
+			
 			if(blScoreRepeat == false)
 				addScore(intCorrect2);
 			break;
@@ -300,6 +318,9 @@ public class startGame implements ActionListener{
 			txtUserNum2.setBackground(Color.white);
 			txtUserAnswerNum.setBackground(Color.green);
 
+			txtUserNum1.setEditable(false);
+			txtUserAnswerNum.setEditable(false);
+			
 			if(blScoreRepeat == false) 
 				addScore(intCorrect2);
 			break;
@@ -364,6 +385,8 @@ public class startGame implements ActionListener{
 			txtUserNum2.setBackground(Color.red);
 			txtUserAnswerNum.setBackground(Color.red);
 
+			txtUserNum1.setEditable(false);
+			
 			if(blScoreRepeat == false)
 				subScore(intIncorrect2 - intCorrect1);
 			break;
@@ -372,6 +395,8 @@ public class startGame implements ActionListener{
 			txtUserNum2.setBackground(Color.green);
 			txtUserAnswerNum.setBackground(Color.red);
 
+			txtUserNum2.setEditable(false);
+			
 			if(blScoreRepeat == false) 
 				subScore(intIncorrect2 - intCorrect1);
 			break;
@@ -388,6 +413,9 @@ public class startGame implements ActionListener{
 			txtUserNum2.setBackground(Color.green);
 			txtUserAnswerNum.setBackground(Color.red);
 
+			txtUserNum1.setEditable(false);
+			txtUserNum2.setEditable(false);
+			
 			if(blScoreRepeat == false) 
 				addScore(intCorrect2 - intIncorrect1);
 			break;
@@ -396,6 +424,9 @@ public class startGame implements ActionListener{
 			txtUserNum2.setBackground(Color.green);
 			txtUserAnswerNum.setBackground(Color.green);
 
+			txtUserNum2.setEditable(false);
+			txtUserAnswerNum.setEditable(false);
+			
 			if(blScoreRepeat == false) 
 				addScore(intCorrect2 - intIncorrect1);
 			break;
@@ -403,6 +434,9 @@ public class startGame implements ActionListener{
 			txtUserNum1.setBackground(Color.green);
 			txtUserNum2.setBackground(Color.red);
 			txtUserAnswerNum.setBackground(Color.green);
+			
+			txtUserNum1.setEditable(false);
+			txtUserAnswerNum.setEditable(false);
 			
 			if(blScoreRepeat == false) 
 				addScore(intCorrect2 - intIncorrect1);
@@ -418,6 +452,8 @@ public class startGame implements ActionListener{
 		btnDenominator.setEnabled(true);	//Makes btnDenominator available for the new question.
 		
 		lblScore.setText(String.valueOf(intScore));	//Display the score.
+		
+		lblCurrQuesNum.setText(String.valueOf(intQuesCount + 1) + ":");
 		
 		txtUserNum1.setText("");
 		txtUserNum1.setEditable(false);	//Text fields not editable to make btnDenominator the main focus.

@@ -59,7 +59,7 @@ public class gameOver implements ActionListener {
 		pnlGameOver.add(btnLogout);
 		
 		btnMusic = new JButton("Music");	//Control the music.
-		btnMusic.setBounds(300, 10, 70, 25);
+		btnMusic.setBounds(305, 10, 70, 25);
 		btnMusic.addActionListener(this);
 		pnlGameOver.add(btnMusic);
 		
