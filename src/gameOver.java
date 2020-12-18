@@ -15,9 +15,11 @@ public class gameOver implements ActionListener {
 	
 	private static JFrame frmGameOver;
 	private static JButton btnRestart, btnLogout, btnClose, btnMusic;
+	
 	private static PreparedStatement prepState;
 	private static ResultSet resSet;
 	private static Connection connGameOverDB;
+	
 	private static int intDatabaseScore = 0;
 	
 	public gameOver() {
@@ -39,7 +41,7 @@ public class gameOver implements ActionListener {
 		lblGameOver.setForeground(Color.green);
 		pnlGameOver.add(lblGameOver);
 		
-		String strScore;	//Displays the player's new score + the amount of points earned while playing.
+		String strScore;	//Displays the player's new score and the amount of points they've earned while playing.
 		strScore = "Score: " + intDatabaseScore + " (+" + startGame.intScore + ")";	
 		
 		JLabel lblScore = new JLabel(strScore);	//Displays the score.
@@ -58,12 +60,12 @@ public class gameOver implements ActionListener {
 		btnLogout.addActionListener(this);
 		pnlGameOver.add(btnLogout);
 		
-		btnMusic = new JButton("Music");	//Control the music.
+		btnMusic = new JButton("Music");	//Controls the music.
 		btnMusic.setBounds(305, 10, 70, 25);
 		btnMusic.addActionListener(this);
 		pnlGameOver.add(btnMusic);
 		
-		btnClose = new JButton("Close");	//Exits the game.
+		btnClose = new JButton("Close");	//Closes the game.
 		btnClose.setBounds(255, 150, 80, 25);
 		btnClose.addActionListener(this);
 		pnlGameOver.add(btnClose);
@@ -72,7 +74,7 @@ public class gameOver implements ActionListener {
 		frmGameOver.setVisible(true);
 	}
 	
-	private void updateScore() {
+	private void updateScore() {	//Updates the player's current score.
 		String strSQL;
 		
 		prepState = null;
@@ -88,7 +90,7 @@ public class gameOver implements ActionListener {
 			if(resSet.next()) 
 				intDatabaseScore = resSet.getInt(1);	
 
-			intDatabaseScore += startGame.intScore;	//Increases the player's total score by what they've earned while playing on their new session.
+			intDatabaseScore += startGame.intScore;	//Increases the player's stored score by their score in the current game session.
 			
 			strSQL = "UPDATE Players SET Score = ? WHERE Username = ?";	//Updates the player's score in the database.
 			prepState = connGameOverDB.prepareStatement(strSQL);
@@ -122,17 +124,17 @@ public class gameOver implements ActionListener {
 		}
 		
 		if(e.getSource() == btnLogout) {	//Launches the login window.
-			closeDB();	//Closes the connection to the database, then restarts when the new player logs in.
+			closeDB();	//Closes the connection to the database, then restarts when a player logs in.
 			frmGameOver.dispose();
 			login launchLogin = new login();
 		}
 		
-		if(e.getSource() == btnMusic) {
+		if(e.getSource() == btnMusic) {	//Pause or play the background music when clicked.
 			login.toggleMusic();
 		}
 		
 		if(e.getSource() == btnClose) {	//Closes the game.
-			closeDB();	//Closing the database when the game ends completely allows the player to continue adding to their score.
+			closeDB();	//Closes the connection to the database.
 			frmGameOver.dispose();
 		}
 	}

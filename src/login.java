@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -15,20 +16,21 @@ import javax.swing.JTextField;
 public class login implements ActionListener{
 	
 	private static JFrame frmLogin;
-	public static Connection connDB;
 	private static JLabel lblUser, lblPassword, lblQues, lblStatus;
 	private static JTextField txtUser, txtQues;
 	private static JPasswordField txtPassword;
 	private JButton btnLogin, btnMusic, btnSignUp, btnClose;
+	
+	public static Connection connDB;
 	private static boolean isPlaying = true;
 	public static String strUsername, strPassword;
 	public static int intQuesAmount;
 	
-	private static void startConnection() {
+	private static void startConnection() {	//Activates the connection between the program and the database.
 		try {
 			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");	//Read the playerInfo database with Ucanaccess.
 			
-			String strPlayerDB = "A:/Software/Java Projects/Fraction Game/playerInfo.accdb";
+			String strPlayerDB = "./playerInfo.accdb";
 			String strURL = "jdbc:ucanaccess://" + strPlayerDB;
 			connDB = DriverManager.getConnection(strURL);
 		}
@@ -38,7 +40,7 @@ public class login implements ActionListener{
 	}
 	
 	public login() {
-		startConnection();
+		startConnection();	//Start the database connection.
 
 		frmLogin = new JFrame("Fraction Game");	//Launches the login window.
 		frmLogin.setSize(400, 210);
@@ -75,11 +77,11 @@ public class login implements ActionListener{
 		txtPassword.setBounds(100, 50, 165, 25);
 		pnlLogin.add(txtPassword);
 		
-		lblQues = new JLabel("Amount of Questions (Default = 3): ");	//Username label.
+		lblQues = new JLabel("Amount of Questions (Default = 3): ");	//Label for the customizable amount of questions.
 		lblQues.setBounds(10, 80, 200, 25);
 		pnlLogin.add(lblQues);
 		
-		txtQues = new JTextField();	//Text field for taking the user's username.
+		txtQues = new JTextField();	//Text field for taking the user's preferred number of questions.
 		txtQues.setBounds(210, 80, 55, 25);
 		pnlLogin.add(txtQues);
 		
@@ -88,21 +90,21 @@ public class login implements ActionListener{
 		btnMusic.addActionListener(this);
 		pnlLogin.add(btnMusic);
 		
-		lblStatus = new JLabel("", JLabel.CENTER);	//Tells the user why their input is invalid.
+		lblStatus = new JLabel("", JLabel.CENTER);	//Tells the user if their input is invalid.
 		lblStatus.setBounds(65, 110, 250, 25);
 		pnlLogin.add(lblStatus);
 		
-		btnClose = new JButton("Close");	//Control the music.
+		btnClose = new JButton("Close");	//Closes the game.
 		btnClose.setBounds(300, 140, 80, 25);
 		btnClose.addActionListener(this);
 		pnlLogin.add(btnClose);
 		
-		frmLogin.getRootPane().setDefaultButton(btnLogin);	//Allow the user to activate the "loginbutton" with the ENTER key.
+		frmLogin.getRootPane().setDefaultButton(btnLogin);	//Allow the user to activate the "btnLogin" with the ENTER key.
 		
 		frmLogin.setVisible(true);
 	}
 
-	public static void toggleMusic() {
+	public static void toggleMusic() {	//Pause and play the music.
 		if(isPlaying == true) {
 			fracGame.pauseMusic();
 			isPlaying = false;
@@ -113,7 +115,7 @@ public class login implements ActionListener{
 		}
 	}
 	
-	private static void loadAccount() {
+	private static void loadAccount() {	//If the user's input is valid, this method launches the game.
 		strUsername = txtUser.getText();
 		strPassword = String.valueOf(txtPassword.getPassword());
 		
@@ -125,12 +127,12 @@ public class login implements ActionListener{
 			prepState.setString(1, strUsername);
 			resSet = prepState.executeQuery();
 			
-			if(resSet.next()) {	//If the user's input matches a database entry, the game will start.
+			if(resSet.next()) {	//Checks for a valid username.
 				prepState = connDB.prepareStatement("SELECT Password FROM Players WHERE Password = ?");
 				prepState.setString(1, strPassword);
 				resSet = prepState.executeQuery();
 				
-				if(resSet.next()) {
+				if(resSet.next()) {	//Checks a valid password.
 					frmLogin.dispose(); 
 					startGame launchStartGame = new startGame();
 				}
@@ -148,41 +150,41 @@ public class login implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == btnSignUp) {
+		if(e.getSource() == btnSignUp) {	//Launches the signUp window.
 			frmLogin.dispose();
 			signUp launchSignUp = new signUp();
 		}
 		
 		if(e.getSource() == btnLogin) {	//Sets the logic for the "btnLogin"
 			if(txtUser.getText().equals("") && String.valueOf(txtPassword.getPassword()).equals("") && txtQues.getText().equals("")) {
-				lblStatus.setText("No input detected");
+				lblStatus.setText("No input detected");	//All fields empty.
 			}
 			else if(txtQues.getText().equals("") != true) {
 				try {
 					intQuesAmount = Integer.parseInt(txtQues.getText());
 					
-					if(intQuesAmount <= 0) {
+					if(intQuesAmount <= 0) {	//Prevents the user from entering numbers smaller than 1.
 						lblStatus.setText("The amount of questions must be larger than 0.");
 					}
-					else {
+					else {	//Starts the game with the user's custom number of questions.
 						loadAccount();
 					}
 				}
-				catch(NumberFormatException ex) {
+				catch(NumberFormatException ex) {	//Prevents the user from entering letters into the amount of questions text field.
 					lblStatus.setText("The amount of questions must be a number.");
 				}
 			}
 			else {
 				intQuesAmount = 3; //Default number of questions.
-				loadAccount();
+				loadAccount();	//Starts the game with the default number of questions.
 			}
 		}
 		
-		if(e.getSource() == btnMusic) {
+		if(e.getSource() == btnMusic) {	//Pause or play the background music when clicked.
 			toggleMusic();
 		}
 		
-		if(e.getSource() == btnClose) {
+		if(e.getSource() == btnClose) {	//Closes the game.
 			frmLogin.dispose();
 		}
 		
