@@ -15,20 +15,3 @@
 4. Each correct answer increases the player's score total.
 5. Game should include text color, background textures and music options (optional timer).
 6. Player data (login info and score) will be maintained with a database.
-
-  **Test Accounts:**
-
-  - Username: blaster088
-  - Password: 088pass
-
-  - Username: xWinLordx7
-  - Password: crown
-
-  - Username: KevinLLC
-  - Password: bizN155
-
-  - Username: DarVicious
-  - Password: jumpMAN_1
-
-  - Username: Greggy
-  - Password: 05501
