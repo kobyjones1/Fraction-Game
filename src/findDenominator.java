@@ -110,14 +110,14 @@ public class findDenominator implements ActionListener{
 		
 		startGame.checkLCD();	//Calculates the new values of the fractions using the LCD.
 		
-		startGame.txtUserNum1.setBackground(Color.white);	//Activate the numerator text fields.
+		startGame.txtUserNum1.setBackground(Color.white);	//Activate the numerator text field.
 		startGame.txtUserNum1.setEditable(true);
 		
-		startGame.txtUserNum2.setBackground(Color.white);
-		startGame.txtUserNum2.setEditable(true);
-		
-		startGame.txtUserAnswerNum.setBackground(Color.white);
-		startGame.txtUserAnswerNum.setEditable(true);
+		SwingUtilities.invokeLater(new Runnable() {	//Places the focus (blinking cursor) on the txtUserNum1. 
+			public void run() { 
+				startGame.txtUserNum1.requestFocus(); 
+			} 
+        });
 		
 		startGame.lblScore.setText(String.valueOf(startGame.intScore));	//Updates the score.
 		
