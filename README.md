@@ -17,16 +17,16 @@
 6. Player data (login info and score) will be maintained with a database.
 
 **Sign-Up Window**
-![alt text](https://puu.sh/GYVXa/da61319653.png)
+ - ![alt text](https://puu.sh/GYVXa/da61319653.png)
 
 **Login Window**
-![alt text](https://puu.sh/GYVWM/fa63927953.png)
+ - ![alt text](https://puu.sh/GYVWM/fa63927953.png)
 
 **Gameplay Window**
-![alt text](https://puu.sh/GYWkB/a849c99446.png)
+ - ![alt text](https://puu.sh/GYWkB/a849c99446.png)
 
 **Gameplay Window 2**
-![alt text](https://puu.sh/GYWkX/be1af07a40.png)
+ - ![alt text](https://puu.sh/GYWkX/be1af07a40.png)
 
 **Game Over Window**
-![alt text](https://puu.sh/GYWlQ/269559702f.png)
+ - ![alt text](https://puu.sh/GYWlQ/269559702f.png)
