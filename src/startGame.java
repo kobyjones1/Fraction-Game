@@ -132,10 +132,12 @@ public class startGame implements ActionListener{
 	}
 
 	private static void newQuestion() {	//Generates the problem for the user to solve.
-		intQuesNum1 = randGen(9);	//Generates a value between 1 and 10;
-		intQuesDen1 = randGen(9);
-		intQuesNum2 = randGen(9);
-		intQuesDen2 = randGen(9);
+		int intMaxNum = 9;	//Sets default max number.
+		
+		intQuesNum1 = randGen(intMaxNum);	//Generates a value between 1 and 10;
+		intQuesDen1 = randGen(intMaxNum);
+		intQuesNum2 = randGen(intMaxNum);
+		intQuesDen2 = randGen(intMaxNum);
 		
 		intOp = randGen(2);	//Randomly determine whether the user will add or subtract the fractions.
 
@@ -193,7 +195,7 @@ public class startGame implements ActionListener{
 				
 				addScore(intCorrect2);
 				
-				SwingUtilities.invokeLater(new Runnable() {	//Places the focus (blinking cursor) on the txtUserNum2. 
+				SwingUtilities.invokeLater(new Runnable() {	//Places the focus (blinking cursor) on the txtUserAnswerNum. 
 					public void run() { 
 						txtUserAnswerNum.requestFocus(); 
 					} 
@@ -341,9 +343,9 @@ public class startGame implements ActionListener{
 			if(txtUserNum1.isEditable() == true)
 				answerCheck(1);	//Checks if the user's answer is correct.
 			if(txtUserNum2.isEditable() == true)
-				answerCheck(2);	//Checks if the user's answer is correct.
+				answerCheck(2);	
 			if(txtUserAnswerNum.isEditable() == true)
-				answerCheck(3);	//Checks if the user's answer is correct.
+				answerCheck(3);
 			
 			lblScore.setText(String.valueOf(intScore));	//Updates the score.
 		}
