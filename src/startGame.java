@@ -17,7 +17,7 @@ public class startGame implements ActionListener{
 	private static JFrame frmGame;
 	public static JButton btnDenominator, btnSubmit, btnMusic;
 	public static JTextField txtUserNum1, txtUserNum2, txtUserDen1, txtUserDen2, txtUserAnswerNum, txtUserAnswerDen;
-	public static JLabel lblCurrEq,lblOp, lblStatus, lblScore, lblCurrQuesNum;
+	public static JLabel lblCurrEq,lblOp, lblScore, lblCurrQuesNum;
 	
 	private static String strCurrEq, strCurrOp, strScoreRepeat = null;
 	private static int intQuesNum1, intQuesDen1, intQuesNum2, intQuesDen2, intOp, intQuesCount, intQuesAmount; 
@@ -95,13 +95,7 @@ public class startGame implements ActionListener{
 		txtUserAnswerDen = new JTextField();	//Text field for the denominator answer.
 		txtUserAnswerDen.setBounds(270, 200, 80, 25);
 		pnlMain.add(txtUserAnswerDen);
-		
-		lblStatus = new JLabel();	//Tells the user if no input was detected.
-		lblStatus.setFont(new Font("Serif", Font.BOLD, 15));
-		lblStatus.setForeground(Color.white);
-		lblStatus.setBounds(30, 233, 400, 25);
-		pnlMain.add(lblStatus);
-		
+
 		btnSubmit = new JButton("Submit");	//Button responsible for checking if the user's answers are correct.
 		btnSubmit.addActionListener(this);
 		btnSubmit.setBounds(270, 233, 80, 25);
@@ -138,10 +132,12 @@ public class startGame implements ActionListener{
 	}
 
 	private static void newQuestion() {	//Generates the problem for the user to solve.
-		intQuesNum1 = randGen(9);	//Generates a value between 1 and 10;
-		intQuesDen1 = randGen(9);
-		intQuesNum2 = randGen(9);
-		intQuesDen2 = randGen(9);
+		int intMaxNum = 9;	//Sets default max number.
+		
+		intQuesNum1 = randGen(intMaxNum);	//Generates a value between 1 and 10;
+		intQuesDen1 = randGen(intMaxNum);
+		intQuesNum2 = randGen(intMaxNum);
+		intQuesDen2 = randGen(intMaxNum);
 		
 		intOp = randGen(2);	//Randomly determine whether the user will add or subtract the fractions.
 
@@ -153,30 +149,29 @@ public class startGame implements ActionListener{
 		strCurrEq = intQuesNum1 + "/" + intQuesDen1 + " " + strCurrOp + " " + intQuesNum2 + "/" + intQuesDen2 + " = ?";	//Builds the equation.
 	}
 	
-	private static void answerCheck() {	//Checks if the user's input is correct, incorrect, or non existent.
+	private static void answerCheck(int intCurrQues) {	//Checks if the user's input is correct, incorrect, or non existent.
 		//Correct answer: 3 = +75 (60 + 15 bonus points), 2 = +40, 1 = +20. Incorrect Answer: 3 = -50, 2 = -30, 1 = -15.
 		int intCorrect3 = 75, intCorrect2 = 40, intCorrect1 = 20, intIncorrect3 = 50, intIncorrect2 = 30, intIncorrect1 = 15;
 
-		if(txtUserNum1.isEditable() == true) {
-			
+		switch(intCurrQues) {
+		case 1: 
 			String strGameNum1 = String.valueOf(intNum1);	//Convert the game's correct answer to a string to compare with the user's answer.
-			
+		
 			if(txtUserNum1.getText().equals(strGameNum1)) {
 				txtUserNum1.setBackground(Color.green);
 				txtUserNum1.setEditable(false);
 				txtUserNum2.setEditable(true);
-				
+
 				addScore(intCorrect1);
-				
+
 				SwingUtilities.invokeLater(new Runnable() {	//Places the focus (blinking cursor) on the txtUserNum2. 
 					public void run() { 
 						txtUserNum2.requestFocus(); 
 					} 
-		        }); 
+				}); 
 			}
 			else if(txtUserNum1.getText().equals("")) {
 				txtUserNum1.setBackground(Color.white);
-				lblStatus.setText("No input detected.");
 			}
 			else {
 				if(txtUserNum1.getText().equals(strScoreRepeat)) {
@@ -188,10 +183,9 @@ public class startGame implements ActionListener{
 					subScore(intIncorrect1);
 				}
 			}
-		}
-		
-		if(txtUserNum2.isEditable() == true) {
 			
+			break;
+		case 2:
 			String strGameNum2 = String.valueOf(intNum2);	//Convert the game's correct answer to a string to compare with the user's answer.
 			
 			if(txtUserNum2.getText().equals(strGameNum2)) {
@@ -201,7 +195,7 @@ public class startGame implements ActionListener{
 				
 				addScore(intCorrect2);
 				
-				SwingUtilities.invokeLater(new Runnable() {	//Places the focus (blinking cursor) on the txtUserNum2. 
+				SwingUtilities.invokeLater(new Runnable() {	//Places the focus (blinking cursor) on the txtUserAnswerNum. 
 					public void run() { 
 						txtUserAnswerNum.requestFocus(); 
 					} 
@@ -209,7 +203,6 @@ public class startGame implements ActionListener{
 			}
 			else if(txtUserNum2.getText().equals("")) {
 				txtUserNum2.setBackground(Color.white);
-				lblStatus.setText("No input detected.");
 			}
 			else {
 				if(txtUserNum2.getText().equals(strScoreRepeat)) {
@@ -221,13 +214,13 @@ public class startGame implements ActionListener{
 					subScore(intIncorrect2);
 				}
 			}
-		}
-		
-		if(txtUserAnswerNum.isEditable() == true) {
 			
+			break;
+		case 3:
 			String strGameANum = String.valueOf(intANum);	//Convert the game's correct answer to a string to compare with the user's answer.
 			
 			if(txtUserAnswerNum.getText().equals(strGameANum)) {
+				
 				addScore(intCorrect3);
 				
 				if(intQuesCount < intQuesAmount - 1) {	//Loops until intQuesCount reaches the amount of questions for the game.
@@ -238,12 +231,10 @@ public class startGame implements ActionListener{
 				else {	//If the last question has been answered, the gameFrame will close and the gameOver screen will launch.
 					frmGame.dispose();
 					gameOver launchGameOver = new gameOver();	//Launch the gameOver window.
-					
 				}
 			}
 			else if(txtUserAnswerNum.getText().equals("")) {
 				txtUserAnswerNum.setBackground(Color.white);
-				lblStatus.setText("No input detected.");
 			}
 			else {
 				if(txtUserAnswerNum.getText().equals(strScoreRepeat)) {
@@ -255,6 +246,8 @@ public class startGame implements ActionListener{
 					subScore(intIncorrect3);
 				}
 			}
+			
+			break;
 		}
 	}
 	
@@ -299,8 +292,6 @@ public class startGame implements ActionListener{
 		else {
 			lblOp.setText("-");
 		}
-		
-		lblStatus.setText("");	//Empty the status label.
 		
 		btnSubmit.setVisible(false);	//Hide the submit button.
 	}
@@ -349,9 +340,12 @@ public class startGame implements ActionListener{
 		}
 		
 		if(e.getSource() == btnSubmit) {	//Checks if the user's input is correct.
-			lblStatus.setText("");	//Empty the status label.
-			
-			answerCheck();	//Checks if the user's answer is correct.
+			if(txtUserNum1.isEditable() == true)
+				answerCheck(1);	//Checks if the user's answer is correct.
+			if(txtUserNum2.isEditable() == true)
+				answerCheck(2);	
+			if(txtUserAnswerNum.isEditable() == true)
+				answerCheck(3);
 			
 			lblScore.setText(String.valueOf(intScore));	//Updates the score.
 		}
