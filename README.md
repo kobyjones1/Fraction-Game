@@ -30,5 +30,8 @@
 **Gameplay Window 2**
  - ![alt text](https://puu.sh/GYWkX/be1af07a40.png)
 
+**Gameplay Window 3**
+ - ![alt text](https://puu.sh/GZ6sN/63b084a975.png)
+
 **Game Over Window**
  - ![alt text](https://puu.sh/GYWlQ/269559702f.png)
