@@ -1,6 +1,6 @@
 # Fraction-Game
 
-**Revision of Capstone project**(originally created with Visual Basic).
+**Revision of Capstone project** (originally created with Visual Basic).
 
 **Project Name:** Fraction Challenge
 
