@@ -16,6 +16,8 @@
 5. Game should include text color, background textures and music options (optional timer).
 6. Player data (login info and score) will be maintained with a database.
 
+
+
 **Sign-Up Window**
  - ![alt text](https://puu.sh/GYVXa/da61319653.png)
 
