@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 public class startGame implements ActionListener{
 	
@@ -18,9 +19,9 @@ public class startGame implements ActionListener{
 	public static JTextField txtUserNum1, txtUserNum2, txtUserDen1, txtUserDen2, txtUserAnswerNum, txtUserAnswerDen;
 	public static JLabel lblCurrEq,lblOp, lblStatus, lblScore, lblCurrQuesNum;
 	
-	private static String strCurrEq, strCurrOp;
+	private static String strCurrEq, strCurrOp, strScoreRepeat = null;
 	private static int intQuesNum1, intQuesDen1, intQuesNum2, intQuesDen2, intOp, intQuesCount, intQuesAmount; 
-	private static int intNum1, intNum2, intANum, intLCD, intScoreRepeat = 0;
+	private static int intNum1, intNum2, intANum, intLCD;
 	
 	public startGame() {
 		intQuesAmount = login.intQuesAmount;	//Sets the amount of iterations for the program.
@@ -152,296 +153,108 @@ public class startGame implements ActionListener{
 		strCurrEq = intQuesNum1 + "/" + intQuesDen1 + " " + strCurrOp + " " + intQuesNum2 + "/" + intQuesDen2 + " = ?";	//Builds the equation.
 	}
 	
-	private static int inputCheck() {	//Checks if the user's input is correct, incorrect, or non existent.
-		String strGameNum1 = String.valueOf(intNum1);	//Convert the game's correct answer to a string to compare with the user's answer.
-		String strGameNum2 = String.valueOf(intNum2);
-		String strGameANum = String.valueOf(intANum);
-		
-		String strNum1 = txtUserNum1.getText();	//Converts the user's answers to strings.
-		String strNum2 = txtUserNum2.getText();
-		String strANum = txtUserAnswerNum.getText();
-		
-		boolean blNum1Correct = false;	//Finds out if any text fields are empty and if they contain the correct answer.
-		boolean blNum2Correct = false;
-		boolean blANumCorrect = false;
-		boolean blEmptyNum1 = false;
-		boolean blEmptyNum2 = false;
-		boolean blEmptyANum = false;
-		
-		if(strNum1.equals(strGameNum1))	//Checks if the answer is correct.
-			blNum1Correct = true;
-		if(strNum1.equals(""))	//Checks if the user left the text field empty.
-			blEmptyNum1 = true;	
-		if(strNum2.equals(strGameNum2))	//Checks if the answer is correct.
-			blNum2Correct = true;		
-		if(strNum2.equals(""))	//Checks if the user left the text field empty.
-			blEmptyNum2 = true;		
-		if(strANum.equals(strGameANum))	//Checks if the answer is correct.
-			blANumCorrect = true;		
-		if(strANum.equals(""))	//Checks if the user left the text field empty.
-			blEmptyANum = true;
-		
-		if(blNum1Correct == true && blNum2Correct == true && blANumCorrect == true)	//All correct.
-			return 1;	
-		if(blEmptyNum1 == true && blEmptyNum2 == true && blEmptyANum == true)	//All empty.
-			return 2;	
-		if(blNum1Correct == true && blEmptyNum2 == true && blEmptyANum == true)	//Num1 correct.	(EMPTY INPUT CHECK)
-			return 3;		
-		if(blNum2Correct == true && blEmptyNum1 == true && blEmptyANum == true)	//Num2 correct. (EMPTY INPUT CHECK)
-			return 4;	
-		if(blANumCorrect == true && blEmptyNum1 == true && blEmptyNum2 == true)	//aNum correct. (EMPTY INPUT CHECK)
-			return 5;		
-		if(blNum1Correct != true && blEmptyNum2 == true && blEmptyANum == true)	//Num1 incorrect. (EMPTY INPUT CHECK)
-			return 11;		
-		if(blNum2Correct != true && blEmptyNum1 == true && blEmptyANum == true)	//Num2 incorrect. (EMPTY INPUT CHECK)
-			return 13;		
-		if(blANumCorrect != true && blEmptyNum1 == true && blEmptyNum2 == true)	//aNum incorrect. (EMPTY INPUT CHECK)
-			return 14;		
-		if(blNum1Correct == true && blNum2Correct == true && blEmptyANum == true)	//Num1, Num2 correct. (EMPTY INPUT CHECK)
-			return 6;		
-		if(blNum1Correct == true && blEmptyNum2 == true && blANumCorrect == true)	//Num1, aNum correct. (EMPTY INPUT CHECK)
-			return 8;	
-		if(blNum2Correct == true && blEmptyNum1 == true && blANumCorrect == true)	//Num2, aNum correct. (EMPTY INPUT CHECK)
-			return 7;
-		if(blNum1Correct != true && blNum2Correct != true && blEmptyANum == true)	//Num1, Num2 incorrect. (EMPTY INPUT CHECK)
-			return 10;		
-		if(blNum1Correct != true && blEmptyNum2 == true && blANumCorrect != true)	//Num1, aNum incorrect. (EMPTY INPUT CHECK)
-			return 15;	
-		if(blNum2Correct != true && blEmptyNum1 == true && blANumCorrect != true)	//Num2, aNum incorrect. (EMPTY INPUT CHECK)
-			return 12;
-		
-		if(blNum1Correct != true && blNum2Correct != true && blANumCorrect != true)	//All wrong.
-			return 9;
-		
-		if(blNum1Correct == true && blNum2Correct != true && blANumCorrect != true)	//Num1 correct.	(WRONG ANSWER CHECK)
-			return 16;
-		if(blNum1Correct != true && blNum2Correct == true && blANumCorrect != true)	//Num2 correct. (WRONG ANSWER CHECK)
-			return 17;
-		if(blNum1Correct != true && blNum2Correct != true && blANumCorrect == true)	//aNum correct. (WRONG ANSWER CHECK)
-			return 18;
-		
-		if(blNum1Correct == true && blNum2Correct == true && blANumCorrect != true)	//Num1 and Num2 correct. (WRONG ANSWER CHECK)
-			return 19;
-		if(blNum1Correct != true && blNum2Correct == true && blANumCorrect == true)	//Num2 and aNum correct. (WRONG ANSWER CHECK)
-			return 20;
-		if(blNum1Correct == true && blNum2Correct != true && blANumCorrect == true)	//Num1 and aNum correct. (WRONG ANSWER CHECK)
-			return 21;
-
-		return 2;	//Assumes input can't be detected.
-	}
-	
-	private static void checkAnswerSwitch(int intSwitchState) {	//Switch state that determines how to respond to the user's input.
-		int intCorrect3 = 75, intCorrect2 = 40, intCorrect1 = 20, intIncorrect3 = 50, intIncorrect2 = 30, intIncorrect1 = 15;
+	private static void answerCheck() {	//Checks if the user's input is correct, incorrect, or non existent.
 		//Correct answer: 3 = +75 (60 + 15 bonus points), 2 = +40, 1 = +20. Incorrect Answer: 3 = -50, 2 = -30, 1 = -15.
-		
-		boolean blScoreRepeat = false;
-		
-		if(intScoreRepeat == intSwitchState)	//Prevents the player from spamming the submit button.
-			blScoreRepeat = true;
-		else
-			intScoreRepeat = intSwitchState;
-		
-		switch(intSwitchState) {	//Alters the data on the game window and increments the score based on the user's input.
-		case 1:	//All correct.	
-			
-			addScore(intCorrect3);
+		int intCorrect3 = 75, intCorrect2 = 40, intCorrect1 = 20, intIncorrect3 = 50, intIncorrect2 = 30, intIncorrect1 = 15;
 
-			if(intQuesCount < intQuesAmount - 1) {	//Loops until intQuesCount reaches the amount of questions for the game.
-				intQuesCount++;
-				reset();
-				break;
+		if(txtUserNum1.isEditable() == true) {
+			
+			String strGameNum1 = String.valueOf(intNum1);	//Convert the game's correct answer to a string to compare with the user's answer.
+			
+			if(txtUserNum1.getText().equals(strGameNum1)) {
+				txtUserNum1.setBackground(Color.green);
+				txtUserNum1.setEditable(false);
+				txtUserNum2.setEditable(true);
+				
+				addScore(intCorrect1);
+				
+				SwingUtilities.invokeLater(new Runnable() {	//Places the focus (blinking cursor) on the txtUserNum2. 
+					public void run() { 
+						txtUserNum2.requestFocus(); 
+					} 
+		        }); 
 			}
-			else {	//If the last question has been answered, the gameFrame will close and the gameOver screen will launch.
-				frmGame.dispose();
-				gameOver launchGameOver = new gameOver();	//Launch the gameOver window.
-				break;
+			else if(txtUserNum1.getText().equals("")) {
+				txtUserNum1.setBackground(Color.white);
+				lblStatus.setText("No input detected.");
 			}
-		case 2:	//All fields are empty.	(EMPTY INPUT CHECK) 
-			txtUserNum1.setBackground(Color.white);
-			txtUserNum2.setBackground(Color.white);
-			txtUserAnswerNum.setBackground(Color.white);
-			lblStatus.setText("No input detected");
-			break;
-		case 3:	//Num1 only; correct.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.green);
-			txtUserNum2.setBackground(Color.white);
-			txtUserAnswerNum.setBackground(Color.white);
-			
-			txtUserNum1.setEditable(false);	//Text field is unavailable once the player gets the answer correct.
-			
-			if(blScoreRepeat == false)
-				addScore(intCorrect1);
-			break;
-		case 4:	//Num2 only; correct.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.white);
-			txtUserNum2.setBackground(Color.green);
-			txtUserAnswerNum.setBackground(Color.white);
-			
-			txtUserNum2.setEditable(false);
-			
-			if(blScoreRepeat == false)
-				addScore(intCorrect1);
-			break;
-		case 5:	//aNum only; correct.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.white);
-			txtUserNum2.setBackground(Color.white);
-			txtUserAnswerNum.setBackground(Color.green);
+			else {
+				if(txtUserNum1.getText().equals(strScoreRepeat)) {
+					txtUserNum1.setBackground(Color.red);
+				}
+				else {
+					txtUserNum1.setBackground(Color.red);
+					strScoreRepeat = txtUserNum1.getText();
+					subScore(intIncorrect1);
+				}
+			}
+		}
 		
-			txtUserAnswerNum.setEditable(false);
+		if(txtUserNum2.isEditable() == true) {
 			
-			if(blScoreRepeat == false)
-				addScore(intCorrect1);
-			break;
-		case 6:	//Num1 and Num2; correct.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.green);
-			txtUserNum2.setBackground(Color.green);
-			txtUserAnswerNum.setBackground(Color.white);
+			String strGameNum2 = String.valueOf(intNum2);	//Convert the game's correct answer to a string to compare with the user's answer.
 			
-			txtUserNum1.setEditable(false);
-			txtUserNum2.setEditable(false);
-			
-			if(blScoreRepeat == false) 
-					addScore(intCorrect2);
-			break;
-		case 7:	//Num2 and aNum; correct.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.white);
-			txtUserNum2.setBackground(Color.green);
-			txtUserAnswerNum.setBackground(Color.green);
-
-			txtUserNum2.setEditable(false);
-			txtUserAnswerNum.setEditable(false);
-			
-			if(blScoreRepeat == false)
+			if(txtUserNum2.getText().equals(strGameNum2)) {
+				txtUserNum2.setBackground(Color.green);
+				txtUserNum2.setEditable(false);
+				txtUserAnswerNum.setEditable(true);
+				
 				addScore(intCorrect2);
-			break;
-		case 8:	//Num1 and aNum; correct.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.green);
-			txtUserNum2.setBackground(Color.white);
-			txtUserAnswerNum.setBackground(Color.green);
-
-			txtUserNum1.setEditable(false);
-			txtUserAnswerNum.setEditable(false);
+				
+				SwingUtilities.invokeLater(new Runnable() {	//Places the focus (blinking cursor) on the txtUserNum2. 
+					public void run() { 
+						txtUserAnswerNum.requestFocus(); 
+					} 
+		        }); 
+			}
+			else if(txtUserNum2.getText().equals("")) {
+				txtUserNum2.setBackground(Color.white);
+				lblStatus.setText("No input detected.");
+			}
+			else {
+				if(txtUserNum2.getText().equals(strScoreRepeat)) {
+					txtUserNum2.setBackground(Color.red);
+				}
+				else {
+					txtUserNum2.setBackground(Color.red);
+					strScoreRepeat = txtUserNum2.getText();
+					subScore(intIncorrect2);
+				}
+			}
+		}
+		
+		if(txtUserAnswerNum.isEditable() == true) {
 			
-			if(blScoreRepeat == false) 
-				addScore(intCorrect2);
-			break;
-		case 9:	//All are wrong. (WRONG ANSWER CHECK)
-			txtUserNum1.setBackground(Color.red);
-			txtUserNum2.setBackground(Color.red);
-			txtUserAnswerNum.setBackground(Color.red);
+			String strGameANum = String.valueOf(intANum);	//Convert the game's correct answer to a string to compare with the user's answer.
 			
-			if(blScoreRepeat == false) 
-				subScore(intIncorrect3);
-			break;
-		case 10:	//Num1 and Num2; wrong.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.red);
-			txtUserNum2.setBackground(Color.red);
-			txtUserAnswerNum.setBackground(Color.white);
-
-			if(blScoreRepeat == false)
-				subScore(intIncorrect2);
-			break;
-		case 11:	//Num1; wrong.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.red);
-			txtUserNum2.setBackground(Color.white);
-			txtUserAnswerNum.setBackground(Color.white);
-			
-			if(blScoreRepeat == false)
-				subScore(intIncorrect1);
-			break;
-		case 12:	//Num2 and aNum; wrong.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.white);
-			txtUserNum2.setBackground(Color.red);
-			txtUserAnswerNum.setBackground(Color.red);
-			
-			if(blScoreRepeat == false) 
-				subScore(intIncorrect2);
-			break;
-		case 13:	//Num2; wrong.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.white);
-			txtUserNum2.setBackground(Color.red);
-			txtUserAnswerNum.setBackground(Color.white);
-			
-			if(blScoreRepeat == false)
-				subScore(intIncorrect1);
-			break;
-		case 14:	//aNum; wrong.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.white);
-			txtUserNum2.setBackground(Color.white);
-			txtUserAnswerNum.setBackground(Color.red);
-			
-			if(blScoreRepeat == false)
-				subScore(intIncorrect1);
-			break;
-		case 15:	//Num1 and aNum; incorrect.	(EMPTY INPUT CHECK)
-			txtUserNum1.setBackground(Color.red);
-			txtUserNum2.setBackground(Color.white);
-			txtUserAnswerNum.setBackground(Color.red);
-
-			if(blScoreRepeat == false) 
-				subScore(intIncorrect2);
-			break;
-		case 16:	//Num1; correct.  (WRONG ANSWER CHECK)
-			txtUserNum1.setBackground(Color.green);
-			txtUserNum2.setBackground(Color.red);
-			txtUserAnswerNum.setBackground(Color.red);
-
-			txtUserNum1.setEditable(false);
-			
-			if(blScoreRepeat == false)
-				subScore(intIncorrect2 - intCorrect1);
-			break;
-		case 17:	//Num2; correct. (WRONG ANSWER CHECK)
-			txtUserNum1.setBackground(Color.red);
-			txtUserNum2.setBackground(Color.green);
-			txtUserAnswerNum.setBackground(Color.red);
-
-			txtUserNum2.setEditable(false);
-			
-			if(blScoreRepeat == false) 
-				subScore(intIncorrect2 - intCorrect1);
-			break;
-		case 18:	//aNum; correct. (WRONG ANSWER CHECK)
-			txtUserNum1.setBackground(Color.red);
-			txtUserNum2.setBackground(Color.red);
-			txtUserAnswerNum.setBackground(Color.green);
-
-			if(blScoreRepeat == false) 
-				subScore(intIncorrect2 - intCorrect1);
-			break;
-		case 19:	//Num1 and Num2; correct. (WRONG ANSWER CHECK)
-			txtUserNum1.setBackground(Color.green);
-			txtUserNum2.setBackground(Color.green);
-			txtUserAnswerNum.setBackground(Color.red);
-
-			txtUserNum1.setEditable(false);
-			txtUserNum2.setEditable(false);
-			
-			if(blScoreRepeat == false) 
-				addScore(intCorrect2 - intIncorrect1);
-			break;
-		case 20:	//Num2 and aNum; correct. (WRONG ANSWER CHECK)
-			txtUserNum1.setBackground(Color.red);
-			txtUserNum2.setBackground(Color.green);
-			txtUserAnswerNum.setBackground(Color.green);
-
-			txtUserNum2.setEditable(false);
-			txtUserAnswerNum.setEditable(false);
-			
-			if(blScoreRepeat == false) 
-				addScore(intCorrect2 - intIncorrect1);
-			break;
-		case 21:	//Num1 and aNum; correct. (WRONG ANSWER CHECK)
-			txtUserNum1.setBackground(Color.green);
-			txtUserNum2.setBackground(Color.red);
-			txtUserAnswerNum.setBackground(Color.green);
-			
-			txtUserNum1.setEditable(false);
-			txtUserAnswerNum.setEditable(false);
-			
-			if(blScoreRepeat == false) 
-				addScore(intCorrect2 - intIncorrect1);
-			break;
+			if(txtUserAnswerNum.getText().equals(strGameANum)) {
+				addScore(intCorrect3);
+				
+				if(intQuesCount < intQuesAmount - 1) {	//Loops until intQuesCount reaches the amount of questions for the game.
+					intQuesCount++;
+					reset();
+					
+				}
+				else {	//If the last question has been answered, the gameFrame will close and the gameOver screen will launch.
+					frmGame.dispose();
+					gameOver launchGameOver = new gameOver();	//Launch the gameOver window.
+					
+				}
+			}
+			else if(txtUserAnswerNum.getText().equals("")) {
+				txtUserAnswerNum.setBackground(Color.white);
+				lblStatus.setText("No input detected.");
+			}
+			else {
+				if(txtUserAnswerNum.getText().equals(strScoreRepeat)) {
+					txtUserAnswerNum.setBackground(Color.red);
+				}
+				else {
+					txtUserAnswerNum.setBackground(Color.red);
+					strScoreRepeat = txtUserAnswerNum.getText();
+					subScore(intIncorrect3);
+				}
+			}
 		}
 	}
 	
@@ -538,7 +351,7 @@ public class startGame implements ActionListener{
 		if(e.getSource() == btnSubmit) {	//Checks if the user's input is correct.
 			lblStatus.setText("");	//Empty the status label.
 			
-			checkAnswerSwitch(inputCheck());	//Awards/deducts points based on the player's answer.
+			answerCheck();	//Checks if the user's answer is correct.
 			
 			lblScore.setText(String.valueOf(intScore));	//Updates the score.
 		}
