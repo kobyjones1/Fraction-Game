@@ -17,6 +17,23 @@
 4. Each correct answer increases the player's score total.
 5. Game should include text color, background textures and music options (optional timer).
 6. Player data (login info and score) will be maintained with a database.
+---
+
+**Gameplay Concept Pic**
+---
+![alt text](https://puu.sh/GZ7gz/01c8dd70be.png)
+
+**LCD Concept Pic**
+---
+![alt text](https://puu.sh/GXswY/d57ae11063.png)
+
+**Gameplay Concept Pic 2**
+---
+![alt text](https://puu.sh/GZ7hh/6561646d7f.png)
+
+
+
+**Final Project**
 
 
 
@@ -32,11 +49,11 @@
 ---
 ![alt text](https://puu.sh/GYWkB/a849c99446.png)
 
-**Gameplay Window 2**
+**LCD Window**
 ---
 ![alt text](https://puu.sh/GYWkX/be1af07a40.png)
 
-**Gameplay Window 3**
+**Gameplay Window 2**
 ---
 ![alt text](https://puu.sh/GZ6sN/63b084a975.png)
 
