@@ -4,6 +4,8 @@
 
 **Project Name:** Fraction Challenge
 
+**Technologies:** Java (Eclipse), SQL, Microsoft Access.
+
 **Guildlines:**
 
 1. Create a fun, interactive game that adds and subtracts fractions.
