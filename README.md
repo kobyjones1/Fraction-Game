@@ -15,3 +15,9 @@
 4. Each correct answer increases the player's score total.
 5. Game should include text color, background textures and music options (optional timer).
 6. Player data (login info and score) will be maintained with a database.
+
+![alt text](https://puu.sh/GYVXa/da61319653.png)
+![alt text](https://puu.sh/GYVWM/fa63927953.png)
+![alt text](https://puu.sh/GYWkB/a849c99446.png)
+![alt text](https://puu.sh/GYWkX/be1af07a40.png)
+![alt text](https://puu.sh/GYWlQ/269559702f.png)
