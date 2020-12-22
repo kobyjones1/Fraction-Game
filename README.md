@@ -9,7 +9,6 @@
 **Guildlines:**
 
 1. Create a fun, interactive game that adds and subtracts fractions.
-2. Random equations will be generated for players to solve. 
 2. Random equations will be generated for players to solve
   - **Target audience:** (elementary -> middle school students).
   - Numeric values between 1 and 10.
